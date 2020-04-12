@@ -47,7 +47,7 @@ class Hanzi extends React.Component {
         return (
             <div className="hanzi-container mb-1">
                 <center>
-                    <h1 center>{pinyin(this.props.char)}</h1>
+                    <h1>{pinyin(this.props.char)}</h1>
                     <svg ref={this.selfRef}
                         xmlns="http://www.w3.org/2000/svg" 
                         width={this.props.size || 100}

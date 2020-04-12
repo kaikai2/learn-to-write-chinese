@@ -23,7 +23,7 @@ class HanziStrokes extends React.Component {
     componentDidUpdate(prevProps, prevState){
         console.log('HanziStroke.componentDidUpdate', this.props.char, this.props.size)
         let self = this;
-        if (this.props.char != prevProps.char) {
+        if (this.props.char !== prevProps.char) {
             HanziWriter.loadCharacterData(this.props.char).then(function(charData){
                 self.setState({strokes: charData.strokes})
             })

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, ButtonGroup, Container, Row, ListGroup, Col} from 'react-bootstrap'
-import {MdReplay, MdChevronLeft, MdChevronRight} from 'react-icons/md'
+import {MdReplay, MdChevronLeft, MdChevronRight, MdPlayArrow} from 'react-icons/md'
 import Hanzi from '../Hanzi'
 import HanziStrokes from '../HanziStrokes'
 
@@ -9,7 +9,7 @@ class MainPage extends React.Component {
         super(props)
         this.state = {
             curIndex: 0,
-            chars: ['天','地', '花', '哒'],
+            chars: ['鸡','米','花','香'],
             replayed: 0,
             width: 0,
             height: 0
@@ -52,6 +52,19 @@ class MainPage extends React.Component {
         });
     }
 
+    play() {
+        var synth = window.speechSynthesis;
+        if (synth && typeof synth.speak === "function"){
+            var utterThis = new SpeechSynthesisUtterance(this.state.chars[this.state.curIndex]);
+            var zhVoices = synth.getVoices().filter(v => v.lang.startsWith('zh'));
+            console.log(zhVoices);
+            var sortedVoices = Array.prototype.concat.apply([], ['zh-CN', 'zh-HK', 'zh-TW'].map(c => zhVoices.filter(v => v.lang == c)));
+            if (sortedVoices.length > 0) {
+                utterThis.voice = sortedVoices[0];
+            }
+            synth.speak(utterThis);
+        }
+    }
     render() {
         return (
             <Container fluid>
@@ -86,18 +99,21 @@ class MainPage extends React.Component {
                 </Row>
                 <Row className="mt-1">
                     <Col>
-                        <ButtonGroup>
+                        <ButtonGroup className="d-flex"> 
                             <Button variant="primary" disabled={this.state.curIndex === 0} onClick={this.prevChar.bind(this)}>
                                 <MdChevronLeft/>
-                                上一个
                             </Button> 
                             <Button variant="success" onClick={this.replay.bind(this)}>
                                 <MdReplay></MdReplay>
                             </Button>
+                            {window.speechSynthesis && typeof window.speechSynthesis.speak === "function" ? (
+                            <Button variant="success" onClick={this.play.bind(this)}>
+                                <MdPlayArrow/>
+                            </Button>
+                            ) : null}
                             <Button variant="primary" disabled={this.state.curIndex === this.state.chars.length - 1} onClick={this.nextChar.bind(this)}>
-                                下一个
                                 <MdChevronRight/>
-                            </Button> 
+                            </Button>
                         </ButtonGroup>
                     </Col>
                 </Row>
