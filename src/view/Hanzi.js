@@ -1,6 +1,7 @@
 import React from 'react';
 
 import HanziWriter from 'hanzi-writer'
+import HanziField from './HanziField'
 
 class Hanzi extends React.Component {
     
@@ -43,21 +44,14 @@ class Hanzi extends React.Component {
     render() {
         console.log('Hanzi.render', this.props.size)
         return (
-            <div className="hanzi-container">
+            <div className="hanzi-container mb-1">
                 <svg ref={this.selfRef}
                     xmlns="http://www.w3.org/2000/svg" 
                     width={this.props.size || 100}
                     height={this.props.size || 100}>
-                    <g>
-                        <line x1="0" y1="0" 
-                            x2={this.props.size || 100} y2={this.props.size || 100} stroke="#DDD" />
-                        <line x1={this.props.size || 100} y1="0"
-                            x2="0" y2={this.props.size || 100} stroke="#DDD" />
-                        <line x1={(this.props.size || 100)/2} y1="0" 
-                            x2={(this.props.size || 100) / 2} y2={(this.props.size || 100)} stroke="#DDD" />
-                        <line x1="0" y1={(this.props.size || 100)/2} 
-                            x2={(this.props.size || 100)} y2={(this.props.size || 100)/2} stroke="#DDD" />
-                    </g>
+
+                    <HanziField size={this.props.size || 100} strokeWidth={3} />
+
                     <g></g>
                 </svg>
             </div>

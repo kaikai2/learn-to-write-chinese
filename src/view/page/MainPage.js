@@ -2,6 +2,7 @@ import React from 'react';
 import {Button, ButtonGroup, Container, Row, ListGroup, Col} from 'react-bootstrap'
 import {MdReplay, MdChevronLeft, MdChevronRight} from 'react-icons/md'
 import Hanzi from '../Hanzi'
+import HanziStrokes from '../HanziStrokes'
 
 class MainPage extends React.Component {
     constructor(props){
@@ -72,10 +73,14 @@ class MainPage extends React.Component {
                     <Col>
                         <Container >
 
-                        <Hanzi replay={this.state.replayed}
-                            size={this.state.optimalCharSize}
-                            char={this.state.chars[this.state.curIndex]} />
-                
+                            <Hanzi replay={this.state.replayed}
+                                size={this.state.optimalCharSize}
+                                char={this.state.chars[this.state.curIndex]} />
+                    
+                            <HanziStrokes 
+                                size={30} 
+                                char={this.state.chars[this.state.curIndex]}
+                            />
                         </Container>
                     </Col>
                 </Row>
