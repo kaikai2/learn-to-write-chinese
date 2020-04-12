@@ -2,6 +2,7 @@ import React from 'react';
 
 import HanziWriter from 'hanzi-writer'
 import HanziField from './HanziField'
+import pinyin from 'pinyin'
 
 class Hanzi extends React.Component {
     
@@ -45,15 +46,18 @@ class Hanzi extends React.Component {
         console.log('Hanzi.render', this.props.size)
         return (
             <div className="hanzi-container mb-1">
-                <svg ref={this.selfRef}
-                    xmlns="http://www.w3.org/2000/svg" 
-                    width={this.props.size || 100}
-                    height={this.props.size || 100}>
+                <center>
+                    <h1 center>{pinyin(this.props.char)}</h1>
+                    <svg ref={this.selfRef}
+                        xmlns="http://www.w3.org/2000/svg" 
+                        width={this.props.size || 100}
+                        height={this.props.size || 100}>
 
-                    <HanziField size={this.props.size || 100} strokeWidth={3} />
+                        <HanziField size={this.props.size || 100} strokeWidth={3} />
 
-                    <g></g>
-                </svg>
+                        <g></g>
+                    </svg>
+                </center>
             </div>
         )
     }
