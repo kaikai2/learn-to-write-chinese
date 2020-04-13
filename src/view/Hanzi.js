@@ -38,29 +38,25 @@ class Hanzi extends React.Component {
     componentWillUnmount() {
         //console.log('Hanzi.componentWillUnmount', this.props.char)
         this.writer = null;
-        if (this.selfRef.current.lastElementChild) {
-            this.selfRef.current.removeChild(this.selfRef.current.lastElementChild)
-        }
     }
     render() {
         //console.log('Hanzi.render', this.props.size)
         return (
-            <div className="hanzi-container mb-1">
+            <span className="hanzi-container">
                 <center>
                     {this.props.showPinyin ? (
-                    <h1>{pinyin(this.props.char)}</h1>
+                    <h1 style={{fontSize: this.props.size / 4 || 25}}>{pinyin(this.props.char)}</h1>
                     ) : null}
-                    <svg ref={this.selfRef}
+                    <svg  ref={this.selfRef}
                         xmlns="http://www.w3.org/2000/svg" 
                         width={this.props.size || 100}
                         height={this.props.size || 100}>
 
                         <HanziField size={this.props.size || 100} strokeWidth={3} />
 
-                        <g></g>
                     </svg>
                 </center>
-            </div>
+            </span>
         )
     }
 }

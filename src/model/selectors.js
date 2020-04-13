@@ -4,7 +4,10 @@ export const getCharsState = store => store.chars;
 export const getNewCharList = store =>
     getCharsState(store) ? getCharsState(store).newChar : [];
 
+export const getReviewCharList = store =>
+    getCharsState(store) ? getCharsState(store).reviewChar : [];
 
+    
 export const getUnrecognisedCharList = store => {
     let chars = getCharsState(store);
     if (chars){

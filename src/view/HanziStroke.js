@@ -27,10 +27,10 @@ class HanziStroke extends React.Component {
         this.selfRef = React.createRef();
         this.state = {
         }
-        console.log('HanziStroke', this.props.name, this.props.strokes.length);
+        //console.log('HanziStroke', this.props.name, this.props.strokes.length);
     }
     showWriter() {
-        console.log('HanziStroke.showWriter', this.props.char, this.props.size)
+        //console.log('HanziStroke.showWriter', this.props.char, this.props.size)
         
         //this.writer.setCharacter(this.props.char);
         //this.writer.animateCharacter()
@@ -43,7 +43,7 @@ class HanziStroke extends React.Component {
 
 
     componentDidMount() {
-        console.log('HanziStroke.componentDidMount', this.props.char, this.props.size);
+        //console.log('HanziStroke.componentDidMount', this.props.char, this.props.size);
         var selfRef = this.selfRef;
         let {strokes, size, color, lastColor} = this.props;
         if (this.props.strokes instanceof Array){
@@ -57,21 +57,21 @@ class HanziStroke extends React.Component {
         }
     }
     componentDidUpdate(){
-        console.log('HanziStroke.componentDidUpdate', this.props.char, this.props.size)
+        //console.log('HanziStroke.componentDidUpdate', this.props.char, this.props.size)
         this.showWriter()
     }
     componentWillUnmount() {
-        console.log('HanziStroke.componentWillUnmount', this.props.char)
+        //console.log('HanziStroke.componentWillUnmount', this.props.char)
         this.writer = null;
         if (this.selfRef.current.lastElementChild) {
             this.selfRef.current.removeChild(this.selfRef.current.lastElementChild)
         }
     }
     render() {
-        console.log('HanziStroke.render', this.props.size)
+        //console.log('HanziStroke.render', this.props.size)
         return (
-            <span className="hanzi-container mt-1 mr-1 ">
-                <svg ref={this.selfRef}
+            <span className="hanzi-container">
+                <svg ref={this.selfRef} className="mt-1 mr-1"
                     xmlns="http://www.w3.org/2000/svg" 
                     width={this.props.size || 100}
                     height={this.props.size || 100}>

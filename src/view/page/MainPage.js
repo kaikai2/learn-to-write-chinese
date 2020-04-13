@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button, ButtonGroup, Container, Row, ListGroup, Col} from 'react-bootstrap'
-import {MdReplay, MdChevronLeft, MdChevronRight, MdPlayArrow} from 'react-icons/md'
+import {MdReplay, MdChevronLeft, MdChevronRight} from 'react-icons/md'
+import {GiSpeaker} from 'react-icons/gi'
 import Hanzi from '../Hanzi'
 import HanziStrokes from '../HanziStrokes'
 
@@ -9,28 +10,9 @@ class MainPage extends React.Component {
         super(props)
         this.state = {
             curIndex: 0,
-            chars: ['鸡','米','花','香'],
+            chars: ['鸡','米','花','香'],
             replayed: 0,
-            width: 0,
-            height: 0
         }
-        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
-    }
-      
-    componentDidMount() {
-        this.updateWindowDimensions();
-        window.addEventListener('resize', this.updateWindowDimensions);
-    }
-    
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.updateWindowDimensions);
-    }
-    
-    updateWindowDimensions() {
-        console.log("window.innerWidth=", window.innerWidth, "window.innerHeight=", window.innerHeight)
-        let res = Math.max(100, Math.min(window.innerWidth, window.innerHeight) * 0.8)
-        console.log("optimalCharSize=", res)
-        this.setState({ optimalCharSize: res });
     }
 
     prevChar() {
@@ -70,11 +52,9 @@ class MainPage extends React.Component {
         return (
             <Container fluid>
                 <Row>
-                    <Col>
+                    <Col xs={8} md={3}>
                         <h1>今日汉字</h1>
                     </Col>
-                </Row>
-                <Row>
                     <Col>
                         <ListGroup horizontal>
                         {this.state.chars.map((c, i) => (
@@ -88,7 +68,7 @@ class MainPage extends React.Component {
                         <Container >
 
                             <Hanzi replay={this.state.replayed}
-                                size={this.state.optimalCharSize}
+                                size={this.props.optimalCharSize}
                                 char={this.state.chars[this.state.curIndex]} />
                     
                             <HanziStrokes 
@@ -109,7 +89,7 @@ class MainPage extends React.Component {
                             </Button>
                             {window.speechSynthesis && typeof window.speechSynthesis.speak === "function" ? (
                             <Button variant="success" onClick={this.play.bind(this)}>
-                                <MdPlayArrow/>
+                                <GiSpeaker/>
                             </Button>
                             ) : null}
                             <Button variant="primary" disabled={this.state.curIndex === this.state.chars.length - 1} onClick={this.nextChar.bind(this)}>

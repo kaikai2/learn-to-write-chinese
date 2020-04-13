@@ -1,61 +1,33 @@
 import React from 'react';
 import {Button, ButtonGroup, Container, Row, ListGroup, Col, Modal} from 'react-bootstrap'
-import {MdDone, MdReplay, MdClose, MdPlayArrow} from 'react-icons/md'
-import {GiUnicorn} from 'react-icons/gi'
+import {MdDone, MdClose } from 'react-icons/md'
+import {GiUnicorn, GiSpeaker} from 'react-icons/gi'
 
 import Hanzi from '../Hanzi'
+import HanziList from '../HanziList'
 
 import { connect}  from 'react-redux'
-import { getNewCharList, getQuizCharQueue } from '../../model/selectors'
+import { getNewCharList, getReviewCharList, getQuizCharQueue } from '../../model/selectors'
 import { startRecognise, recognise } from '../../model/actions'
 
-class NewChars extends React.Component {
-    render() {
-        console.log(this.props.chars);
-        return (
-            <ListGroup horizontal>
-                {this.props.chars && this.props.chars.map((c,i) => {
-                    return <ListGroup.Item key={c}>{c}</ListGroup.Item>
-                })}
-            </ListGroup> 
-        );
-    }
-}
-let ConnectedNewChars = connect(store => {
-    return {chars : getNewCharList(store)};
- } )(NewChars)
+import { speak } from '../../module/speak'
+
+import VoiceText from '../VoiceText'
 
 class RecognisePage extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            char: null,
-            replayed: 0,
-            width: 0,
-            height: 0
+            begin: false
         }
-        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
     componentDidMount() {
-        this.updateWindowDimensions();
         this.props.startRecognise(
             ['L51'],
             ['L22', 'L37', 'L44', 'L48', 'L50']);
-        window.addEventListener('resize', this.updateWindowDimensions);
-    }
-    
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.updateWindowDimensions);
     }
 
     componentDidUpdate(prevProps, prevState, snapShot) {
-    }
-    
-    updateWindowDimensions() {
-        //console.log("window.innerWidth=", window.innerWidth, "window.innerHeight=", window.innerHeight)
-        let res = Math.max(100, Math.min(window.innerWidth, window.innerHeight) * 0.8)
-        //console.log("optimalCharSize=", res)
-        this.setState({ optimalCharSize: res });
     }
 
     recognise() {
@@ -69,88 +41,102 @@ class RecognisePage extends React.Component {
             //this.play();
         }
     }
-    replay() {
-        console.log('replay');
-        this.setState({
-            replayed: this.state.replayed + 1
-        });
-    }
 
     play() {
-        var synth = window.speechSynthesis;
-        if (synth && typeof synth.speak === "function" && this.props.quizQueue.length > 0){
-            var utterThis = new SpeechSynthesisUtterance(this.props.quizQueue[0]);
-            var zhVoices = synth.getVoices().filter(v => v.lang.startsWith('zh'));
-            console.log(zhVoices);
-            var sortedVoices = Array.prototype.concat.apply([], 
-                ['zh-CN', 'zh-HK', 'zh-TW'].map(c => zhVoices.filter(v => v.lang === c)));
-            if (sortedVoices.length > 0) {
-                utterThis.voice = sortedVoices[0];
-            }
-            synth.speak(utterThis);
+        if (this.props.quizQueue.length > 0){
+            speak(this.props.quizQueue[0])
         }
     }
     render() {
         return (
             <Container fluid>
-                { false ? ( 
-                    <>
-                <Row>
-                    <Col>
-                        <h1>今日生字</h1>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <ConnectedNewChars/>
-                    </Col>
-                </Row> </>) : null}
+                { this.state.begin ? ( 
+                <>
+
+                    <Row className="mt-1">
+                        <Col>
+                            <VoiceText text='请认一认，这个是什么字啊'/>
+                        </Col>
+                    </Row>
+                    <Row className="mt-1">
+                        <Col>
+                            <Container>
+                                <Hanzi replay={0}
+                                    size={this.props.optimalCharSize}
+                                    char={this.props.quizQueue.length > 0 ? this.props.quizQueue[0] : null} 
+                                    showPinyin={false}/>
+                            </Container>
+                        </Col>
+                    </Row>
+                </>
+                ) : (
+                <>
+                    <Row>
+                        <Col>
+                            <center>
+                                <h1>今日生字</h1>
+                            </center>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <HanziList chars={this.props.newChars} size={50} className="mb-2"/>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <center>
+                                <h1>今日复习</h1>
+                            </center>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <HanziList chars={this.props.reviewChars} size={50}/>
+                        </Col>
+                    </Row>
+                </>)}
 
                 <Row className="mt-1">
                     <Col>
-                        <Container>
-                            <Hanzi replay={this.state.replayed}
-                                size={this.state.optimalCharSize}
-                                char={this.props.quizQueue.length > 0 ? this.props.quizQueue[0] : null} 
-                                showPinyin={false}/>
-                        </Container>
-                    </Col>
-                </Row>
-                <Row className="mt-1">
-                    <Col>
-                        <ButtonGroup className="d-flex"> 
+                        <ButtonGroup className="d-flex">
+                        { this.state.begin ? (
+                        <>
                             <Button variant="primary" onClick={this.recognise.bind(this)}>
                                 <MdDone/>
-                            </Button> 
-                            <Button variant="success" onClick={this.replay.bind(this)}>
-                                <MdReplay></MdReplay>
                             </Button>
                             {window.speechSynthesis && typeof window.speechSynthesis.speak === "function" ? (
                             <Button variant="success" onClick={this.play.bind(this)}>
-                                <MdPlayArrow/>
+                                <GiSpeaker/>
                             </Button>
                             ) : null}
                             <Button variant="primary" onClick={this.dontRecognise.bind(this)}>
                                 <MdClose/>
                             </Button>
+                            </>
+                        ) : (
+                            <Button variant="primary" onClick={e => this.setState({begin: true})}>
+                                <MdDone/>
+                                 开始测试
+                            </Button>
+                        )}
                         </ButtonGroup>
                     </Col>
                 </Row>
-                {this.props.quizQueue.length === 0 ? (
-                    <Modal
-                        size="sm"
-                        show={true}>
+                <Modal
+                    size="sm"
+                    show={this.props.quizQueue.length === 0 && this.state.begin} 
+                    onHide={e => this.setState({begin: false})}>
 
-                        <Modal.Header closeButton>
-                        <Modal.Title>
-                            恭喜你！完成了！
-                        </Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <GiUnicorn size={this.state.optimalCharSize/2 || 32}/>
-                        </Modal.Body>
-                    </Modal>
-                ) : null}
+                    <Modal.Header closeButton>
+                    <Modal.Title>
+                        <VoiceText text="恭喜你！完成了！"/>
+                    </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <GiUnicorn size={this.props.optimalCharSize/2 || 32}/>
+                    </Modal.Body>
+                </Modal>
             </Container>
         )
     }
@@ -163,6 +149,8 @@ RecognisePage.defaultProps = {
 function mapStateToProps(state){
     // console.log('RecognisePage.mapStateToProps', state);
     return {
+        newChars: getNewCharList(state),
+        reviewChars: getReviewCharList(state),
         quizQueue: getQuizCharQueue(state)
     }
 }
