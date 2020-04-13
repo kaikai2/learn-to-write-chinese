@@ -17,12 +17,12 @@ class Hanzi extends React.Component {
         this.writer._options.width = this.props.size;
         this.writer._options.height = this.props.size;
         
-        this.writer.setCharacter(this.props.char);
+        this.writer.setCharacter(this.props.char || '');
         this.writer.animateCharacter()
     }
     componentDidMount() {
         console.log('Hanzi.componentDidMount', this.props.char, this.props.size);
-        this.writer = HanziWriter.create(this.selfRef.current, this.props.char, {
+        this.writer = HanziWriter.create(this.selfRef.current, this.props.char || '', {
             width: this.props.size,
             height: this.props.size,
             padding: 5,
@@ -47,7 +47,9 @@ class Hanzi extends React.Component {
         return (
             <div className="hanzi-container mb-1">
                 <center>
+                    {this.props.showPinyin ? (
                     <h1>{pinyin(this.props.char)}</h1>
+                    ) : null}
                     <svg ref={this.selfRef}
                         xmlns="http://www.w3.org/2000/svg" 
                         width={this.props.size || 100}
@@ -62,5 +64,9 @@ class Hanzi extends React.Component {
         )
     }
 }
-
+Hanzi.defaultProps = {
+    showPinyin: true,
+    size: 100,
+    char: '字',
+}
 export default Hanzi;

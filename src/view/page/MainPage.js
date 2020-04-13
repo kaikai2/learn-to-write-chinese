@@ -58,7 +58,8 @@ class MainPage extends React.Component {
             var utterThis = new SpeechSynthesisUtterance(this.state.chars[this.state.curIndex]);
             var zhVoices = synth.getVoices().filter(v => v.lang.startsWith('zh'));
             console.log(zhVoices);
-            var sortedVoices = Array.prototype.concat.apply([], ['zh-CN', 'zh-HK', 'zh-TW'].map(c => zhVoices.filter(v => v.lang == c)));
+            var sortedVoices = Array.prototype.concat.apply([], 
+                ['zh-CN', 'zh-HK', 'zh-TW'].map(c => zhVoices.filter(v => v.lang === c)));
             if (sortedVoices.length > 0) {
                 utterThis.voice = sortedVoices[0];
             }
