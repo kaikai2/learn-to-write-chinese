@@ -13,16 +13,16 @@ class Hanzi extends React.Component {
         }
     }
     showWriter() {
-        console.log('Hanzi.showWriter', this.props.char, this.state.currentChar, this.props.size)
+        //console.log('Hanzi.showWriter', this.props.char, this.state.currentChar, this.props.size)
         this.writer._options.width = this.props.size;
         this.writer._options.height = this.props.size;
         
-        this.writer.setCharacter(this.props.char || '');
+        this.writer.setCharacter(this.props.char || '字');
         //this.writer.animateCharacter()
     }
     componentDidMount() {
-        console.log('Hanzi.componentDidMount', this.props.char, this.props.size);
-        this.writer = HanziWriter.create(this.selfRef.current, this.props.char || '', {
+        //console.log('Hanzi.componentDidMount', this.props.char, this.props.size);
+        this.writer = HanziWriter.create(this.selfRef.current, this.props.char || '字', {
             width: this.props.size,
             height: this.props.size,
             padding: 5,
@@ -32,18 +32,18 @@ class Hanzi extends React.Component {
         this.showWriter()
     }
     componentDidUpdate(){
-        console.log('Hanzi.componentDidUpdate', this.props.char, this.props.size)
+        //console.log('Hanzi.componentDidUpdate', this.props.char, this.props.size)
         this.showWriter()
     }
     componentWillUnmount() {
-        console.log('Hanzi.componentWillUnmount', this.props.char)
+        //console.log('Hanzi.componentWillUnmount', this.props.char)
         this.writer = null;
         if (this.selfRef.current.lastElementChild) {
             this.selfRef.current.removeChild(this.selfRef.current.lastElementChild)
         }
     }
     render() {
-        console.log('Hanzi.render', this.props.size)
+        //console.log('Hanzi.render', this.props.size)
         return (
             <div className="hanzi-container mb-1">
                 <center>

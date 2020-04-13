@@ -1,13 +1,12 @@
 import React from 'react';
 import {Button, ButtonGroup, Container, Row, ListGroup, Col, Modal} from 'react-bootstrap'
-import {MdDone, MdReplay, MdClose, MdChevronRight, MdPlayArrow} from 'react-icons/md'
+import {MdDone, MdReplay, MdClose, MdPlayArrow} from 'react-icons/md'
 import {GiUnicorn} from 'react-icons/gi'
 
 import Hanzi from '../Hanzi'
-import HanziStrokes from '../HanziStrokes'
 
 import { connect}  from 'react-redux'
-import { getNewCharList, getUnrecognisedCharList } from '../../model/selectors'
+import { getNewCharList, getQuizCharQueue } from '../../model/selectors'
 import { startRecognise, recognise } from '../../model/actions'
 
 class NewChars extends React.Component {
@@ -37,14 +36,6 @@ class RecognisePage extends React.Component {
         }
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
-    showNextChar() {
-        console.log('RecognisePage.showNextChar', this.props.unrecognisedChars, this.state.char);
-        if (this.props.unrecognisedChars.length > 0) {
-            let nextIndex = Math.floor(Math.random() * this.props.unrecognisedChars.length);
-            console.log('RecognisePage.showNextChar: random index', nextIndex, this.props.unrecognisedChars[nextIndex]);
-            this.setState({char: this.props.unrecognisedChars[nextIndex]});
-        }
-    }
     componentDidMount() {
         this.updateWindowDimensions();
         this.props.startRecognise(
@@ -58,27 +49,25 @@ class RecognisePage extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapShot) {
-        console.log("RecognisePage.componentDidUpdate", this.props.unrecognisedChars, prevProps.unrecognisedChars);
-        if (this.props.unrecognisedChars !== prevProps.unrecognisedChars) {
-            console.log("RecognisePage.componentDidUpdate: props changed. was", prevProps.unrecognisedChars);
-            this.showNextChar();
-        }
     }
     
     updateWindowDimensions() {
-        console.log("window.innerWidth=", window.innerWidth, "window.innerHeight=", window.innerHeight)
+        //console.log("window.innerWidth=", window.innerWidth, "window.innerHeight=", window.innerHeight)
         let res = Math.max(100, Math.min(window.innerWidth, window.innerHeight) * 0.8)
-        console.log("optimalCharSize=", res)
+        //console.log("optimalCharSize=", res)
         this.setState({ optimalCharSize: res });
     }
 
     recognise() {
-        this.props.recognise(this.state.char, true);
-        this.showNextChar();
+        if (this.props.quizQueue.length > 0) {
+            this.props.recognise(this.props.quizQueue[0], true);
+        }
     }
     dontRecognise() {
-        this.props.recognise(this.state.char, false);
-        this.play();
+        if (this.props.quizQueue.length > 0) {
+            this.props.recognise(this.props.quizQueue[0], false);
+            //this.play();
+        }
     }
     replay() {
         console.log('replay');
@@ -89,8 +78,8 @@ class RecognisePage extends React.Component {
 
     play() {
         var synth = window.speechSynthesis;
-        if (synth && typeof synth.speak === "function"){
-            var utterThis = new SpeechSynthesisUtterance(this.state.char);
+        if (synth && typeof synth.speak === "function" && this.props.quizQueue.length > 0){
+            var utterThis = new SpeechSynthesisUtterance(this.props.quizQueue[0]);
             var zhVoices = synth.getVoices().filter(v => v.lang.startsWith('zh'));
             console.log(zhVoices);
             var sortedVoices = Array.prototype.concat.apply([], 
@@ -122,7 +111,7 @@ class RecognisePage extends React.Component {
                         <Container>
                             <Hanzi replay={this.state.replayed}
                                 size={this.state.optimalCharSize}
-                                char={this.state.char} 
+                                char={this.props.quizQueue.length > 0 ? this.props.quizQueue[0] : null} 
                                 showPinyin={false}/>
                         </Container>
                     </Col>
@@ -147,18 +136,18 @@ class RecognisePage extends React.Component {
                         </ButtonGroup>
                     </Col>
                 </Row>
-                {this.props.unrecognisedChars.length === 0 ? (
+                {this.props.quizQueue.length === 0 ? (
                     <Modal
                         size="sm"
                         show={true}>
 
                         <Modal.Header closeButton>
-                        <Modal.Title id="example-modal-sizes-title-sm">
+                        <Modal.Title>
                             恭喜你！完成了！
                         </Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <GiUnicorn size={this.state.optimalCharSize/2}/>
+                            <GiUnicorn size={this.state.optimalCharSize/2 || 32}/>
                         </Modal.Body>
                     </Modal>
                 ) : null}
@@ -166,10 +155,15 @@ class RecognisePage extends React.Component {
         )
     }
 }
+
+RecognisePage.defaultProps = {
+    quizQueue: []
+}
+
 function mapStateToProps(state){
-    console.log('RecognisePage.mapStateToProps', state);
+    // console.log('RecognisePage.mapStateToProps', state);
     return {
-        unrecognisedChars: getUnrecognisedCharList(state)
+        quizQueue: getQuizCharQueue(state)
     }
 }
 
