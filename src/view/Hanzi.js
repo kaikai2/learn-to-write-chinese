@@ -18,7 +18,7 @@ class Hanzi extends React.Component {
         this.writer._options.height = this.props.size;
         
         this.writer.setCharacter(this.props.char || '');
-        this.writer.animateCharacter()
+        //this.writer.animateCharacter()
     }
     componentDidMount() {
         console.log('Hanzi.componentDidMount', this.props.char, this.props.size);

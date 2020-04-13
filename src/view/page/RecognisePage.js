@@ -48,8 +48,8 @@ class RecognisePage extends React.Component {
     componentDidMount() {
         this.updateWindowDimensions();
         this.props.startRecognise(
-            ['L1'],
-            ['L2', 'L3', 'L4']);
+            ['L51'],
+            ['L22', 'L37', 'L44', 'L48', 'L50']);
         window.addEventListener('resize', this.updateWindowDimensions);
     }
     
@@ -104,6 +104,8 @@ class RecognisePage extends React.Component {
     render() {
         return (
             <Container fluid>
+                { false ? ( 
+                    <>
                 <Row>
                     <Col>
                         <h1>今日生字</h1>
@@ -113,7 +115,8 @@ class RecognisePage extends React.Component {
                     <Col>
                         <ConnectedNewChars/>
                     </Col>
-                </Row>
+                </Row> </>) : null}
+
                 <Row className="mt-1">
                     <Col>
                         <Container>
