@@ -1,14 +1,14 @@
 import React from 'react';
 import {Button, ButtonGroup, Container, Row, ListGroup, Col, Modal} from 'react-bootstrap'
-import {MdDone, MdClose } from 'react-icons/md'
+import {MdDone, MdClose, MdChevronLeft, MdChevronRight} from 'react-icons/md'
 import {GiUnicorn, GiSpeaker} from 'react-icons/gi'
 
 import Hanzi from '../Hanzi'
 import HanziList from '../HanziList'
 
 import { connect}  from 'react-redux'
-import { getNewCharList, getReviewCharList, getQuizCharQueue } from '../../model/selectors'
-import { startRecognise, recognise } from '../../model/actions'
+import { getNewCharList, getReviewCharList, getQuizCharQueue, getNewListIndex } from '../../model/selectors'
+import { startRecognise, recognise, changeNew } from '../../model/actions'
 
 import { speak } from '../../module/speak'
 
@@ -21,10 +21,28 @@ class RecognisePage extends React.Component {
             begin: false
         }
     }
-    componentDidMount() {
+    changeNewIndex(index) {
+        this.props.changeNew(index)
+
         this.props.startRecognise(
-            ['L51'],
-            ['L22', 'L37', 'L44', 'L48', 'L50']);
+            ['L' + index],
+            [-29, -14, -7, -3, -1].map(d => index + d).filter(i => i >= 0)
+                .map(i => 'L' + i.toString())
+            );
+    }
+
+    componentDidMount() {
+        console.log();
+        this.props.startRecognise(
+            ['L' + this.props.newListIndex],
+            [-29, -14, -7, -3, -1].map(d => this.props.newListIndex + d).filter(i => i >= 0)
+                .map(i => 'L' + i.toString())
+            );
+        /*
+        this.props.startRecognise(
+            ['L55'],
+            ['L26', 'L41', 'L48', 'L52', 'L54']);
+        */
     }
 
     componentDidUpdate(prevProps, prevState, snapShot) {
@@ -74,7 +92,15 @@ class RecognisePage extends React.Component {
                     <Row>
                         <Col>
                             <center>
-                                <h1>今日生字</h1>
+                                <ButtonGroup className="d-flex">
+                                    <Button variant="primary" onClick={e => this.changeNewIndex(this.props.newListIndex - 1)}>
+                                        <MdChevronLeft />
+                                    </Button>
+                                    <h1>今日生字</h1>
+                                    <Button variant="primary" onClick={e => this.changeNewIndex(this.props.newListIndex + 1)}>
+                                        <MdChevronRight />
+                                    </Button>
+                                </ButtonGroup>
                             </center>
                         </Col>
                     </Row>
@@ -151,10 +177,11 @@ function mapStateToProps(state){
     return {
         newChars: getNewCharList(state),
         reviewChars: getReviewCharList(state),
-        quizQueue: getQuizCharQueue(state)
+        quizQueue: getQuizCharQueue(state),
+        newListIndex: getNewListIndex(state),
     }
 }
 
 export default connect(
     mapStateToProps,
-    {startRecognise, recognise} )(RecognisePage);
+    {startRecognise, recognise, changeNew} )(RecognisePage);

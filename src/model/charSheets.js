@@ -50,10 +50,13 @@ const chars = (/*"亮 星 我 明 树 叶 日 孩 红 "
     + "已 叠 包 碗 写 冒 您 了").split(/ */);
 var line = 1;
 export var CharSheets = {
+    length: 0
 };
 for (var i = 0; i < chars.length; i += 3) {
     CharSheets["L" + line.toString()] = chars[i] + chars[i + 1] + chars[i + 2];
     line++;
 }
+
+CharSheets.length = line - 1;
 
 console.log(CharSheets);

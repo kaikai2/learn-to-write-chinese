@@ -1,4 +1,8 @@
-import {START_RECOGNISE, RECOGNISE} from './actionTypes'
+import {
+    START_RECOGNISE, 
+    RECOGNISE, 
+    CHANGE_NEW
+} from './actionTypes'
 
 export const startRecognise = (newList, reviewList) => ({
     type: START_RECOGNISE,
@@ -13,5 +17,12 @@ export const recognise = (theChar, recognised ) => ({
     payload: {
         theChar,
         recognised 
+    }
+});
+
+export const changeNew = (newListIndex) => ({
+    type: CHANGE_NEW,
+    payload: {
+        newListIndex,
     }
 });

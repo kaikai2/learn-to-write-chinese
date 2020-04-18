@@ -1,5 +1,9 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux'
 
-import chars from "./chars";
+import chars from './chars'
+import charSheets from './charSheets'
 
-export default combineReducers( {chars });
+export default combineReducers( {
+    chars, 
+    charSheets 
+})
