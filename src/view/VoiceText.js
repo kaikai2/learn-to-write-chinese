@@ -6,12 +6,26 @@ import { speak } from '../module/speak'
 
 class VoiceText extends React.Component {
 
+    constructor(props, context){
+        super(props)
+        this.state = {
+            speaking : false,
+        }
+    }
     componentDidMount(){
-        speak(this.props.text)
+        if (this.props.autoSpeak) {
+            this.doSpeak()
+        }
     }
 
     doSpeak() {
-        speak(this.props.text)
+        if (this.state.speaking) {
+            return
+        }
+        this.setState({speaking: true})
+        speak(this.props.text).then((e) => {
+            this.setState({speaking: false})
+        })
     }
 
     render() {
@@ -19,7 +33,7 @@ class VoiceText extends React.Component {
             <>
                 {this.props.text}
                 {" "}
-                <Button variant="outline-info" onClick={this.doSpeak.bind(this)} >
+                <Button variant="outline-info" onClick={this.doSpeak.bind(this)} disabled={this.state.speaking}>
                     <GiSpeaker  />
                 </Button>
             </>
@@ -27,5 +41,7 @@ class VoiceText extends React.Component {
     }
 }
 
-
+VoiceText.defaultProps = {
+    autoSpeak: false
+}
 export default VoiceText;

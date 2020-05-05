@@ -1,14 +1,15 @@
 import React from 'react';
-import {Button, ButtonGroup, Container, Row, ProgressBar, Col, Modal} from 'react-bootstrap'
+import {Button, ButtonGroup, Container, Row, ProgressBar, Col, Modal, ListGroup} from 'react-bootstrap'
 import {MdDone, MdClose, MdChevronLeft, MdChevronRight} from 'react-icons/md'
 import {GiUnicorn, GiSpeaker} from 'react-icons/gi'
 
 import Hanzi from '../Hanzi'
 import HanziList from '../HanziList'
+import RecogniseHistoryItem from '../RecogniseHistoryItem'
 
 import { connect}  from 'react-redux'
-import { getNewCharList, getReviewCharList, getQuizCharQueue, getNewListIndex, getWrongChars } from '../../model/selectors'
-import { startRecognise, recognise, changeNew } from '../../model/actions'
+import { getNewCharList, getReviewCharList, getQuizCharQueue, getNewListIndex, getWrongChars, getRecogniseHistory } from '../../model/selectors'
+import { prepareRecognise, startRecognise, recognise, changeNew } from '../../model/actions'
 
 import { speak } from '../../module/speak'
 
@@ -24,7 +25,7 @@ class RecognisePage extends React.Component {
     changeNewIndex(index) {
         this.props.changeNew(index)
 
-        this.props.startRecognise(
+        this.props.prepareRecognise(
             ['L' + index],
             [-29, -14, -7, -3, -1].map(d => index + d).filter(i => i >= 0)
                 .map(i => 'L' + i.toString())
@@ -33,7 +34,7 @@ class RecognisePage extends React.Component {
 
     componentDidMount() {
         console.log();
-        this.props.startRecognise(
+        this.props.prepareRecognise(
             ['L' + this.props.newListIndex],
             [-29, -14, -7, -3, -1].map(d => this.props.newListIndex + d).filter(i => i >= 0)
                 .map(i => 'L' + i.toString())
@@ -47,7 +48,10 @@ class RecognisePage extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapShot) {
     }
-
+    startRecognise() {
+        this.setState({begin: true})
+        this.props.startRecognise()
+    }
     recognise() {
         if (this.props.quizQueue.length > 0) {
             this.props.recognise(this.props.quizQueue[0], true);
@@ -99,7 +103,7 @@ class RecognisePage extends React.Component {
                     </Row>
                     <Row className="mt-1">
                         <Col>
-                            <VoiceText text='请认一认，这个是什么字啊'/>
+                            <VoiceText text='请认一认，这个是什么字啊' autoSpeak={true}/>
                         </Col>
                     </Row>
                     <Row className="mt-1">
@@ -167,7 +171,7 @@ class RecognisePage extends React.Component {
                             </Button>
                             </>
                         ) : (
-                            <Button variant="primary" onClick={e => this.setState({begin: true})}>
+                            <Button variant="primary" onClick={this.startRecognise.bind(this)}>
                                 <MdDone/>
                                  开始测试
                             </Button>
@@ -175,6 +179,18 @@ class RecognisePage extends React.Component {
                         </ButtonGroup>
                     </Col>
                 </Row>
+
+                { !this.state.begin && (
+                <Row className="mt-1">
+                    <Col>
+                        <ListGroup>
+                        {this.props.recogniseHistory.slice(-5).reverse().map((r, i) => (
+                            <ListGroup.Item key={i} as={RecogniseHistoryItem} {...r}/>
+                        ))}
+                        </ListGroup>
+                    </Col>
+                </Row>
+                ) }
                 <Modal
                     size="sm"
                     show={this.props.quizQueue.length === 0 && this.state.begin} 
@@ -205,8 +221,10 @@ export default connect(
         quizQueue: getQuizCharQueue(state),
         newListIndex: getNewListIndex(state),
         wrongChars: getWrongChars(state),
+        recogniseHistory: getRecogniseHistory(state),
     }),
     {
+        prepareRecognise,
         startRecognise, 
         recognise,
         changeNew

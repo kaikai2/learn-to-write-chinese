@@ -20,7 +20,7 @@ export const getWrongChars = store =>
     getCharsState(store) ? Object.entries(getCharsState(store).charsToLearn)
         .filter(([c, v]) => !v.recognised && v.tried > 0)
         .map(([c, v]) => c) : []
-        
+
 export const getQuizCharQueue = store => 
     getCharsState(store) ? getCharsState(store).quizQueue : []
 
@@ -30,3 +30,6 @@ export const getNewListIndex = store => {
     console.log('getNewListIndex = ', getCharSheetsState(store));
     return getCharSheetsState(store) ? getCharSheetsState(store).newListIndex || 1 : 1
 }
+
+export const getRecogniseHistory = store => 
+    getCharsState(store) ? getCharsState(store).recogniseHistory : []

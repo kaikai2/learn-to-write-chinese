@@ -1,16 +1,23 @@
 import {
-    START_RECOGNISE, 
+    PREPARE_RECOGNISE,
+    START_RECOGNISE,
     RECOGNISE, 
     CHANGE_NEW
 } from './actionTypes'
 
-export const startRecognise = (newList, reviewList) => ({
-    type: START_RECOGNISE,
+export const prepareRecognise = (newList, reviewList) => ({
+    type: PREPARE_RECOGNISE,
     payload: {
         newList,
         reviewList 
     }
 });
+
+export const startRecognise = () => ({
+    type: START_RECOGNISE,
+    payload: {        
+    }
+})
 
 export const recognise = (theChar, recognised ) => ({
     type: RECOGNISE,

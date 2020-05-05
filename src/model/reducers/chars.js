@@ -1,4 +1,4 @@
-import { START_RECOGNISE, RECOGNISE } from "../actionTypes";
+import { PREPARE_RECOGNISE, START_RECOGNISE, RECOGNISE } from "../actionTypes";
 import { CharSheets} from "../charSheets"
 
 const initialState = {
@@ -7,6 +7,7 @@ const initialState = {
   charsToLearn: {},
   quizQueue: [],
   seed: 0,
+  recogniseHistory: [],
 };
 
 function random(seed) {
@@ -31,27 +32,38 @@ function shuffle(array, seed){
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case PREPARE_RECOGNISE: {
+      console.log('reducers.chars', action.payload)
+      const { newList, reviewList } = action.payload
+      const newChar = newList.map(listName => CharSheets[listName]).join("").split("")
+      const reviewChar = reviewList.map(listName => CharSheets[listName]).join("").split("")
+      // newChar must learn 2 times.
+      const {array, seed} = shuffle(newChar.concat(reviewChar), state.seed)
+      const quizQueue = newChar.concat(array)
+      return {
+          ...state,
+          newChar: newChar,
+          reviewChar:  reviewChar,
+          charsToLearn: newChar.concat(reviewChar).reduce(function(result, item, index, array){
+              result[item] = {
+                  tried: 0,
+                  recognised: false,
+              };
+              return result
+          }, {}),
+          quizQueue: quizQueue,
+          seed: seed
+      };
+    }
     case START_RECOGNISE: {
-        console.log('reducers.chars', action.payload)
-        const { newList, reviewList } = action.payload
-        const newChar = newList.map(listName => CharSheets[listName]).join("").split("")
-        const reviewChar = reviewList.map(listName => CharSheets[listName]).join("").split("")
-        // newChar must learn 2 times.
-        const {array, seed} = shuffle(newChar.concat(reviewChar), state.seed)
-        const quizQueue = newChar.concat(array)
         return {
             ...state,
-            newChar: newChar,
-            reviewChar:  reviewChar,
-            charsToLearn: newChar.concat(reviewChar).reduce(function(result, item, index, array){
-                result[item] = {
-                    tried: 0,
-                    recognised: false,
-                };
-                return result
-            }, {}),
-            quizQueue: quizQueue,
-            seed: seed,
+            recogniseHistory: [...state.recogniseHistory, { 
+              date: new Date(),
+              newChar: state.newChar,
+              reviewChar: state.reviewChar,
+              finishDate: null
+            }]
         };
     }
     case RECOGNISE: {
@@ -63,6 +75,7 @@ export default function(state = initialState, action) {
 
       let quizQueue = state.quizQueue.slice(1)
       let seed = state.seed
+      let recogniseHistory = state.recogniseHistory
       if (!recognised) {
         if (quizQueue.length > 3) {
           var i = Math.floor(random(seed++) * quizQueue.length - 3) + 3
@@ -70,6 +83,15 @@ export default function(state = initialState, action) {
           quizQueue[i] = theChar
         } else {
           quizQueue.push(theChar)
+        }
+      } else {
+        // passed?
+        if (quizQueue.length === 0) {
+          let currentRecognise = recogniseHistory[recogniseHistory.length - 1]
+          recogniseHistory = [...recogniseHistory.slice(0, -1), {
+            ...currentRecognise,
+            finishDate: new Date()
+          }]
         }
       }
       return {
@@ -83,6 +105,7 @@ export default function(state = initialState, action) {
         },
         quizQueue: quizQueue,
         seed: seed,
+        recogniseHistory: recogniseHistory
       };
     }
     default:

@@ -1,3 +1,4 @@
+export const PREPARE_RECOGNISE = "PREPARE_RECOGNISE";
 export const START_RECOGNISE = "START_RECOGNISE";
 export const RECOGNISE = "RECOGNISE";
 export const CHANGE_NEW = "CHANGE_NEW";
