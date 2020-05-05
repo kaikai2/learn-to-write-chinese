@@ -198,7 +198,7 @@ class RecognisePage extends React.Component {
 
                     <Modal.Header closeButton>
                     <Modal.Title>
-                        <VoiceText text="恭喜你！完成了！"/>
+                        <VoiceText text="恭喜你！完成了！" autoSpeak={true}/>
                     </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>

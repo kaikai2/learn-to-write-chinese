@@ -12,13 +12,18 @@ class Hanzi extends React.Component {
         this.state = {
         }
     }
+    click() {
+        if (this.props.clickPlay && this.writer) {
+            this.writer.animateCharacter()            
+        }
+    }
+
     showWriter() {
         //console.log('Hanzi.showWriter', this.props.char, this.state.currentChar, this.props.size)
         this.writer._options.width = this.props.size;
         this.writer._options.height = this.props.size;
         
         this.writer.setCharacter(this.props.char || '字');
-        //this.writer.animateCharacter()
     }
     componentDidMount() {
         //console.log('Hanzi.componentDidMount', this.props.char, this.props.size);
@@ -45,12 +50,14 @@ class Hanzi extends React.Component {
             <span className="hanzi-container">
                 <center>
                     {this.props.showPinyin ? (
-                    <h1 style={{fontSize: this.props.size / 4 || 25}}>{pinyin(this.props.char)}</h1>
+                    <h1 style={{fontSize: this.props.size / 4 || 25}}>{pinyin(this.props.char, {heteronym: true}).join(' ')}</h1>
                     ) : null}
-                    <svg  ref={this.selfRef}
+                    <svg ref={this.selfRef}
                         xmlns="http://www.w3.org/2000/svg" 
                         width={this.props.size || 100}
-                        height={this.props.size || 100}>
+                        height={this.props.size || 100}
+                        onClick={this.click.bind(this)}
+                        >
 
                         <HanziField size={this.props.size || 100} strokeWidth={3} />
 
@@ -61,6 +68,7 @@ class Hanzi extends React.Component {
     }
 }
 Hanzi.defaultProps = {
+    clickPlay: false,
     showPinyin: true,
     size: 100,
     char: '字',

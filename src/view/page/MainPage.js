@@ -5,6 +5,9 @@ import {GiSpeaker} from 'react-icons/gi'
 import Hanzi from '../Hanzi'
 import HanziStrokes from '../HanziStrokes'
 
+import { connect}  from 'react-redux'
+import { getNewCharList } from '../../model/selectors'
+
 class MainPage extends React.Component {
     constructor(props){
         super(props)
@@ -27,17 +30,11 @@ class MainPage extends React.Component {
             curIndex: this.state.curIndex + 1
         });
     }
-    replay() {
-        console.log('replay');
-        this.setState({
-            replayed: this.state.replayed + 1
-        });
-    }
 
     play() {
         var synth = window.speechSynthesis;
         if (synth && typeof synth.speak === "function"){
-            var utterThis = new SpeechSynthesisUtterance(this.state.chars[this.state.curIndex]);
+            var utterThis = new SpeechSynthesisUtterance(this.props.newChars[this.state.curIndex]);
             var zhVoices = synth.getVoices().filter(v => v.lang.startsWith('zh'));
             console.log(zhVoices);
             var sortedVoices = Array.prototype.concat.apply([], 
@@ -57,7 +54,7 @@ class MainPage extends React.Component {
                     </Col>
                     <Col>
                         <ListGroup horizontal>
-                        {this.state.chars.map((c, i) => (
+                        {this.props.newChars.map((c, i) => (
                             <ListGroup.Item key={i.toString()} active={i === this.state.curIndex} onClick={() => this.setState({curIndex: i})}>{c}</ListGroup.Item>
                             ))}
                         </ListGroup>
@@ -67,13 +64,14 @@ class MainPage extends React.Component {
                     <Col>
                         <Container >
 
-                            <Hanzi replay={this.state.replayed}
+                            <Hanzi
                                 size={this.props.optimalCharSize}
-                                char={this.state.chars[this.state.curIndex]} />
+                                char={this.props.newChars[this.state.curIndex]} 
+                                clickPlay={true}/>
                     
                             <HanziStrokes 
                                 size={30} 
-                                char={this.state.chars[this.state.curIndex]}
+                                char={this.props.newChars[this.state.curIndex]}
                             />
                         </Container>
                     </Col>
@@ -84,15 +82,12 @@ class MainPage extends React.Component {
                             <Button variant="primary" disabled={this.state.curIndex === 0} onClick={this.prevChar.bind(this)}>
                                 <MdChevronLeft/>
                             </Button> 
-                            <Button variant="success" onClick={this.replay.bind(this)}>
-                                <MdReplay></MdReplay>
-                            </Button>
                             {window.speechSynthesis && typeof window.speechSynthesis.speak === "function" ? (
                             <Button variant="success" onClick={this.play.bind(this)}>
                                 <GiSpeaker/>
                             </Button>
                             ) : null}
-                            <Button variant="primary" disabled={this.state.curIndex === this.state.chars.length - 1} onClick={this.nextChar.bind(this)}>
+                            <Button variant="primary" disabled={this.state.curIndex === this.props.newChars.length - 1} onClick={this.nextChar.bind(this)}>
                                 <MdChevronRight/>
                             </Button>
                         </ButtonGroup>
@@ -105,4 +100,10 @@ class MainPage extends React.Component {
 }
 
 
-export default MainPage;
+export default connect(
+    state => ({
+        newChars: getNewCharList(state),
+    }),
+    {
+    } )(MainPage);
+
