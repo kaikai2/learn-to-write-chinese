@@ -184,7 +184,8 @@ class RecognisePage extends React.Component {
                 <Row className="mt-1">
                     <Col>
                         <ListGroup>
-                        {this.props.recogniseHistory.slice(-5).reverse().map((r, i) => (
+                        {this.props.recogniseHistory instanceof Array &&
+                        this.props.recogniseHistory.slice(-5).reverse().map((r, i) => (
                             <ListGroup.Item key={i} as={RecogniseHistoryItem} {...r}/>
                         ))}
                         </ListGroup>

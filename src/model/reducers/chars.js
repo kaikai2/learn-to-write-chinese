@@ -58,7 +58,7 @@ export default function(state = initialState, action) {
     case START_RECOGNISE: {
         return {
             ...state,
-            recogniseHistory: [...state.recogniseHistory, { 
+            recogniseHistory: [...state.recogniseHistory || [], { 
               date: new Date(),
               newChar: state.newChar,
               reviewChar: state.reviewChar,
