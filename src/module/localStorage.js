@@ -19,7 +19,7 @@ export const saveState = (state) => {
     try {
         const serializedState = JSON.stringify(state)
         localStorage.setItem('state', serializedState)
-        console.log('saveState', serializedState)
+        console.log('saveState', serializedState.slice(0, 100))
     } catch(err) {
         // ignore write errors
         console.log('saveState, caught err:', err)

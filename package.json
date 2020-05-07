@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.2.1",
     "bootstrap": "^4.4.1",
     "hanzi-writer": "^2.2.2",
+    "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "pinyin": "^2.9.0",
     "react": "^16.13.1",
