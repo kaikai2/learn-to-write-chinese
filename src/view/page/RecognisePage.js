@@ -1,16 +1,14 @@
 import React from 'react';
-import {Button, ButtonGroup, Container, Row, ProgressBar, Col, Modal, ListGroup} from 'react-bootstrap'
-import {MdDone, MdClose, MdChevronLeft, MdChevronRight} from 'react-icons/md'
-import {GiUnicorn, GiSpeaker} from 'react-icons/gi'
+import { connect }  from 'react-redux'
 
-import Hanzi from '../Hanzi'
-import HanziList from '../HanziList'
-import RecogniseHistoryItem from '../RecogniseHistoryItem'
+import { Button, ButtonGroup, Container, Row, Col, Modal, ListGroup } from 'react-bootstrap'
+import { MdDone, MdClose, MdChevronLeft, MdChevronRight } from 'react-icons/md'
+import { GiUnicorn, GiSpeaker } from 'react-icons/gi'
 
-import { connect}  from 'react-redux'
+import { Hanzi, HanziList, RecogniseHistoryItem, RecogniseProgressBar, VoiceText } from '..'
+
 import { getNewCharList, getReviewCharList, getQuizCharQueue, getNewListIndex, getWrongChars, getRecogniseHistory } from '../../model/selectors'
 import { prepareRecognise, startRecognise, recognise, changeNew } from '../../model/actions'
-
 import { speak } from '../../module/speak'
 
 class Result {

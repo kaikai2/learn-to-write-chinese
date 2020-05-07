@@ -1,9 +1,7 @@
-import React from 'react';
-import {Nav} from 'react-bootstrap'
-//import logo from './logo.svg'
-import './App.css';
-import MainPage from './view/page/MainPage';
-import RecognisePage from './view/page/RecognisePage';
+import React from 'react'
+import { Nav } from 'react-bootstrap'
+import './App.css'
+import { MainPage, RecognisePage, HistoryPage } from './view/page'
 
 class App extends React.Component {
   constructor(props) {
@@ -29,6 +27,23 @@ class App extends React.Component {
       //console.log("optimalCharSize=", res)
       this.setState({ optimalCharSize: res });
   }
+  renderPage() {
+    switch(this.state.activeTab) {
+      default:
+      case 0:
+        return (
+          <MainPage optimalCharSize={this.state.optimalCharSize}/>
+        ) 
+      case 1: 
+        return (
+          <RecognisePage optimalCharSize={this.state.optimalCharSize}/>
+        )
+      case 2:
+        return (
+          <HistoryPage optimalCharSize={this.state.optimalCharSize}/>
+        )
+    }
+  }
   render() {
     return (
       <>
@@ -39,12 +54,11 @@ class App extends React.Component {
         <Nav.Item>
           <Nav.Link eventKey="link-1" active={this.state.activeTab === 1} onClick={e => this.setState({activeTab: 1})}>测试</Nav.Link>
         </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="link-1" active={this.state.activeTab === 2} onClick={e => this.setState({activeTab: 2})}>历史</Nav.Link>
+        </Nav.Item>
       </Nav>
-      {this.state.activeTab === 0 ? (
-        <MainPage optimalCharSize={this.state.optimalCharSize}/>
-      ) : (
-        <RecognisePage optimalCharSize={this.state.optimalCharSize}/>
-      )}
+      {this.renderPage()}
       </>
     );
   }

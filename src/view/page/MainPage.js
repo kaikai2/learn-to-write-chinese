@@ -1,12 +1,13 @@
-import React from 'react';
-import {Button, ButtonGroup, Container, Row, ListGroup, Col} from 'react-bootstrap'
-import {MdReplay, MdChevronLeft, MdChevronRight} from 'react-icons/md'
-import {GiSpeaker} from 'react-icons/gi'
-import Hanzi from '../Hanzi'
-import HanziStrokes from '../HanziStrokes'
+import React from 'react'
+import { connect }  from 'react-redux'
 
-import { connect}  from 'react-redux'
+import { Button, ButtonGroup, Container, Row, ListGroup, Col } from 'react-bootstrap'
+import { MdChevronLeft, MdChevronRight } from 'react-icons/md'
+import { GiSpeaker } from 'react-icons/gi'
+
 import { getNewCharList } from '../../model/selectors'
+
+import { Hanzi, HanziStrokes } from '..'
 
 class MainPage extends React.Component {
     constructor(props){
