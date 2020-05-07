@@ -13,16 +13,23 @@ import { prepareRecognise, startRecognise, recognise, changeNew } from '../../mo
 
 import { speak } from '../../module/speak'
 
-import VoiceText from '../VoiceText'
+class Result {
+    static get Finished() {return 0}
+    static get Failed() {return 1}
+    static get Passed() {return 2}
+}
 
 class RecognisePage extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            begin: false
+            begin: false,
+            passedChars: []
         }
     }
-    changeNewIndex(index) {
+
+    changeNewIndex(index = this.props.newListIndex) {
+        this.setState({begin: false, passedChars: []})
         this.props.changeNew(index)
 
         this.props.prepareRecognise(
@@ -33,17 +40,12 @@ class RecognisePage extends React.Component {
     }
 
     componentDidMount() {
-        console.log();
+        this.setState({begin: false, passedChars: []})
         this.props.prepareRecognise(
             ['L' + this.props.newListIndex],
             [-29, -14, -7, -3, -1].map(d => this.props.newListIndex + d).filter(i => i >= 0)
                 .map(i => 'L' + i.toString())
             );
-        /*
-        this.props.startRecognise(
-            ['L55'],
-            ['L26', 'L41', 'L48', 'L52', 'L54']);
-        */
     }
 
     componentDidUpdate(prevProps, prevState, snapShot) {
@@ -54,29 +56,36 @@ class RecognisePage extends React.Component {
     }
     recognise() {
         if (this.props.quizQueue.length > 0) {
-            this.props.recognise(this.props.quizQueue[0], true);
+            this.props.recognise(this.props.quizQueue[0], true)
+            this.setState({passedChars: [...this.state.passedChars, this.props.quizQueue[0]]})
         }
     }
     dontRecognise() {
         if (this.props.quizQueue.length > 0) {
-            this.props.recognise(this.props.quizQueue[0], false);
+            this.props.recognise(this.props.quizQueue[0], false)
             //this.play();
         }
     }
     progress(key) {
-        var total = new Set(this.props.newChars.concat(this.props.reviewChars)).size;
-        if (key === 2){
-            return 100 * this.props.wrongChars.length / total;
-        }
-        return 100 * (total - new Set(this.props.quizQueue).size) / total;
+        let totalChar = new Set(this.props.newChars.concat(this.props.reviewChars))
+        let total = totalChar.size
+        let quizQueue = new Set(this.props.quizQueue)
+        return [{
+            variant: "",
+            now: 100 * (total - quizQueue.size) / total,
+            label: `${total - quizQueue.size}/${total}`,
+        }, {
+            variant: "success",
+            now: 100 * (new Set([...this.state.passedChars].filter(x => quizQueue.has(x))).size) / total,
+            label: `${new Set([...this.state.passedChars].filter(x => quizQueue.has(x))).size}`
+        },
+        {
+            variant: "warning",
+            now: 100 * this.props.wrongChars.length / total,
+            label: `${this.props.wrongChars.length}`
+        }]
     }
-    progressLabel(key) {
-        var total = new Set(this.props.newChars.concat(this.props.reviewChars)).size;
-        if (key === 2){
-            return `${this.props.wrongChars.length}`;
-        }
-        return `${total - new Set(this.props.quizQueue).size}/${total}`;
-    }
+
     play() {
         if (this.props.quizQueue.length > 0){
             speak(this.props.quizQueue[0])
@@ -89,16 +98,7 @@ class RecognisePage extends React.Component {
                 <>
                     <Row className="mt-1">
                         <Col>
-                            <ProgressBar>
-                                <ProgressBar
-                                    now={this.progress()} key={1}
-                                    label={this.progressLabel()}
-                                />
-                                <ProgressBar variant="warning" key={2}
-                                    now={this.progress(2)}
-                                    label={this.progressLabel(2)}
-                                />
-                            </ProgressBar>
+                            <RecogniseProgressBar progress={this.progress.bind(this)}/>
                         </Col>
                     </Row>
                     <Row className="mt-1">
@@ -195,7 +195,7 @@ class RecognisePage extends React.Component {
                 <Modal
                     size="sm"
                     show={this.props.quizQueue.length === 0 && this.state.begin} 
-                    onHide={e => this.setState({begin: false})}>
+                    onHide={this.changeNewIndex.bind(this)}>
 
                     <Modal.Header closeButton>
                     <Modal.Title>
