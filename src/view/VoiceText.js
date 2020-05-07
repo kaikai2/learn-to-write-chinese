@@ -1,10 +1,11 @@
 import React from 'react'
 
-import {Button} from 'react-bootstrap'
-import {GiSpeaker} from 'react-icons/gi'
+import { Button } from 'react-bootstrap'
+import { GiSpeaker } from 'react-icons/gi'
 import { speak } from '../module/speak'
 
 class VoiceText extends React.Component {
+    _isMounted = false
 
     constructor(props, context){
         super(props)
@@ -12,10 +13,16 @@ class VoiceText extends React.Component {
             speaking : false,
         }
     }
+    
     componentDidMount(){
+        this._isMounted = true
         if (this.props.autoSpeak) {
             this.doSpeak()
         }
+    }
+
+    componentWillUnmount(){
+        this._isMounted = false
     }
 
     doSpeak() {
@@ -24,7 +31,9 @@ class VoiceText extends React.Component {
         }
         this.setState({speaking: true})
         speak(this.props.text).then((e) => {
-            this.setState({speaking: false})
+            if (this._isMounted) {
+                this.setState({speaking: false})
+            }
         })
     }
 
@@ -44,4 +53,5 @@ class VoiceText extends React.Component {
 VoiceText.defaultProps = {
     autoSpeak: false
 }
+
 export default VoiceText;
