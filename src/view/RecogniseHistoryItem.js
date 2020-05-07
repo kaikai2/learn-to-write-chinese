@@ -7,7 +7,6 @@ class RecogniseHistoryItem extends React.Component {
     
     constructor(props, context){
         super(props)
-        console.log(props)
     }
     text() {
         moment.locale('zh-cn')

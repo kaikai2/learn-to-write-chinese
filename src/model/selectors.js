@@ -1,15 +1,11 @@
 
 export const getCharsState = store => store.chars;
 
-export const getNewCharList = store => {
-    console.log('getNewCharList', getCharsState(store).newChar)
-    return getCharsState(store) ? getCharsState(store).newChar : []
-}
+export const getNewCharList = store => 
+    getCharsState(store) ? getCharsState(store).newChar : []
 
-export const getReviewCharList = store => {
-    console.log('getReviewCharList', getCharsState(store).reviewChar)
-    return getCharsState(store) ? getCharsState(store).reviewChar : []
-}
+export const getReviewCharList = store => 
+    getCharsState(store) ? getCharsState(store).reviewChar : []
 
 export const getUnrecognisedCharList = store =>
     getCharsState(store) ? Object.entries(getCharsState(store).charsToLearn)
@@ -26,10 +22,8 @@ export const getQuizCharQueue = store =>
 
 export const getCharSheetsState = store => store.charSheets
 
-export const getNewListIndex = store => {
-    console.log('getNewListIndex = ', getCharSheetsState(store));
-    return getCharSheetsState(store) ? getCharSheetsState(store).newListIndex || 1 : 1
-}
+export const getNewListIndex = store => 
+    getCharSheetsState(store) ? getCharSheetsState(store).newListIndex || 1 : 1
 
 export const getRecogniseHistory = store => 
     getCharsState(store) ? getCharsState(store).recogniseHistory : []

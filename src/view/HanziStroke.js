@@ -40,26 +40,24 @@ class HanziStroke extends React.Component {
         renderFanningStrokes(this.selfRef.current, this.props.strokes, this.props.size, this.props.color, this.props.lastColor);
     }
 
-
-
     componentDidMount() {
         //console.log('HanziStroke.componentDidMount', this.props.char, this.props.size);
         var selfRef = this.selfRef;
         let {strokes, size, color, lastColor} = this.props;
         if (this.props.strokes instanceof Array){
-            console.log('this.props.strokes instanceof Array')
             renderFanningStrokes(selfRef.current, this.props.strokes, size, color, lastColor);
         } else {
-            console.log('HanziWriter.loadCharacterData')
             HanziWriter.loadCharacterData(this.props.char).then(function(charData){
                 renderFanningStrokes(selfRef.current, charData.strokes.slice(0, strokes), size, color, lastColor);
             })
         }
     }
+
     componentDidUpdate(){
         //console.log('HanziStroke.componentDidUpdate', this.props.char, this.props.size)
         this.showWriter()
     }
+
     componentWillUnmount() {
         //console.log('HanziStroke.componentWillUnmount', this.props.char)
         this.writer = null;
@@ -67,6 +65,7 @@ class HanziStroke extends React.Component {
             this.selfRef.current.removeChild(this.selfRef.current.lastElementChild)
         }
     }
+
     render() {
         //console.log('HanziStroke.render', this.props.size)
         return (
@@ -81,6 +80,7 @@ class HanziStroke extends React.Component {
         )
     }
 }
+
 HanziStroke.defaultProps = {
     color: '#555',
     lastColor: '#f00',
@@ -88,4 +88,5 @@ HanziStroke.defaultProps = {
     strokes: 3, // or array of stroks data loaded via HanziWriter.loadCharacterData
     char: '字',
 }
+
 export default HanziStroke;
