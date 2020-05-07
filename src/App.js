@@ -2,6 +2,7 @@ import React from 'react'
 import { Nav } from 'react-bootstrap'
 import './App.css'
 import { MainPage, RecognisePage, HistoryPage } from './view/page'
+import { debounce } from 'lodash'
 
 class App extends React.Component {
   constructor(props) {
@@ -14,18 +15,19 @@ class App extends React.Component {
     }
   }
   componentDidMount() {
-      this.updateWindowDimensions();
-      window.addEventListener('resize', this.updateWindowDimensions.bind(this));
+    this.deboucedUpdateWindowDimensions = debounce(this.updateWindowDimensions.bind(this), 200)
+    this.updateWindowDimensions()
+    window.addEventListener('resize', this.deboucedUpdateWindowDimensions)
   }
   
   componentWillUnmount() {
-      window.removeEventListener('resize', this.updateWindowDimensions.bind(this));
+    window.removeEventListener('resize', this.deboucedUpdateWindowDimensions)
   }
   updateWindowDimensions() {
-      //console.log("window.innerWidth=", window.innerWidth, "window.innerHeight=", window.innerHeight)
-      let res = Math.max(100, Math.min(window.innerWidth, window.innerHeight) * 0.8)
-      //console.log("optimalCharSize=", res)
-      this.setState({ optimalCharSize: res });
+    //console.log("window.innerWidth=", window.innerWidth, "window.innerHeight=", window.innerHeight)
+    let res = Math.max(100, Math.min(window.innerWidth, window.innerHeight) * 0.8)
+    //console.log("optimalCharSize=", res)
+    this.setState({ optimalCharSize: res });
   }
   renderPage() {
     switch(this.state.activeTab) {
