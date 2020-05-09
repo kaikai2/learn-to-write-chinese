@@ -4,7 +4,8 @@ const SpeakModule = {
     voice: null,
 }
 
-export const speak = text => {
+
+export const speak = (text, flush = false) => {
     const self = this
     const p = new Promise((resolve, reject) => {
         if (!SpeakModule.synth){
@@ -24,7 +25,10 @@ export const speak = text => {
         if (SpeakModule.voice) {
             var utterThis = new SpeechSynthesisUtterance(text)
             utterThis.voice = SpeakModule.voice
-            utterThis.onend = resolve.bind(self);
+            utterThis.onend = resolve.bind(self)
+            if (flush) {
+                SpeakModule.synth.cancel()
+            }
             SpeakModule.synth.speak(utterThis)
         } else {
             reject.bind(self)()

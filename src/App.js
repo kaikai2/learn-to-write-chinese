@@ -1,7 +1,7 @@
 import React from 'react'
 import { Nav } from 'react-bootstrap'
 import './App.css'
-import { MainPage, RecognisePage, HistoryPage } from './view/page'
+import { MainPage, RecognisePage, HistoryPage, PlayGroundPage } from './view/page'
 import { debounce } from 'lodash'
 
 class App extends React.Component {
@@ -44,6 +44,10 @@ class App extends React.Component {
         return (
           <HistoryPage optimalCharSize={this.state.optimalCharSize}/>
         )
+      case 3:
+        return (
+          <PlayGroundPage optimalCharSize={this.state.optimalCharSize}/>
+        )
     }
   }
   render() {
@@ -58,6 +62,9 @@ class App extends React.Component {
         </Nav.Item>
         <Nav.Item>
           <Nav.Link eventKey="link-1" active={this.state.activeTab === 2} onClick={e => this.setState({activeTab: 2})}>历史</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="link-1" active={this.state.activeTab === 3} onClick={e => this.setState({activeTab: 3})}>游乐场</Nav.Link>
         </Nav.Item>
       </Nav>
       {this.renderPage()}

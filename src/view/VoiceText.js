@@ -26,11 +26,11 @@ class VoiceText extends React.Component {
     }
 
     doSpeak() {
-        if (this.state.speaking) {
+        if (!this.props.doubleSpeak && this.state.speaking) {
             return
         }
         this.setState({speaking: true})
-        speak(this.props.text).then((e) => {
+        speak(this.props.text, this.props.flush).then((e) => {
             if (this._isMounted) {
                 this.setState({speaking: false})
             }
@@ -42,7 +42,7 @@ class VoiceText extends React.Component {
             <>
                 {this.props.text}
                 {" "}
-                <Button variant="outline-info" onClick={this.doSpeak.bind(this)} disabled={this.state.speaking}>
+                <Button variant="outline-info" onClick={this.doSpeak.bind(this)} disabled={!this.props.doubleSpeak && this.state.speaking}>
                     <GiSpeaker  />
                 </Button>
             </>
@@ -51,7 +51,9 @@ class VoiceText extends React.Component {
 }
 
 VoiceText.defaultProps = {
-    autoSpeak: false
+    autoSpeak: false,
+    doubleSpeak: false,
+    flush: false,
 }
 
 export default VoiceText;
