@@ -7,6 +7,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import annyang from 'annyang'
+//import { SpeechKITT } from '../node_modules/speechkitt/src/speechkitt'
+
+if (annyang) {
+  annyang.setLanguage('zh-CN')
+  //SpeechKITT.annyang();
+  //SpeechKITT.setStylesheet('//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/themes/flat.css')
+}
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
