@@ -132,15 +132,11 @@ class RecognisePage extends React.Component {
     }
 
     recognise() {
-        console.log('recognise')
         this.setState({judging: true})
         speak('答对了!' + this.randomCompliments()).then(x => {
-            console.log('speak.then')
             if (!this._isMounted) {
-                console.log('speak.then !mounted')
                 return
             }
-            console.log('speak.the setState judging false')
             this.setState({judging: false})
             if (this.props.quizQueue.length > 0) {
                 this.props.recognise(this.props.quizQueue[0], true)
