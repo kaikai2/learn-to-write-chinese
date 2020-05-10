@@ -30,6 +30,7 @@ export const speak = (text, flush = false) => {
             if (!SpeakModule.synth.speaking) {
                 SpeakModule.utterances.length = 0    
             }
+            // https://stackoverflow.com/questions/23483990/speechsynthesis-api-onend-callback-not-working
             SpeakModule.utterances.push(utterThis)
             if (flush) {
                 SpeakModule.synth.cancel()
