@@ -2,6 +2,7 @@
 const SpeakModule = {
     synth: null,
     voice: null,
+    utterances: []
 }
 
 
@@ -26,11 +27,16 @@ export const speak = (text, flush = false) => {
             var utterThis = new SpeechSynthesisUtterance(text)
             utterThis.voice = SpeakModule.voice
             utterThis.onend = resolve.bind(self)
+            if (!SpeakModule.synth.speaking) {
+                SpeakModule.utterances.length = 0    
+            }
+            SpeakModule.utterances.push(utterThis)
             if (flush) {
                 SpeakModule.synth.cancel()
             }
             SpeakModule.synth.speak(utterThis)
         } else {
+            console.log('speak.reject')
             reject.bind(self)()
         }
     })

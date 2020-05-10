@@ -22,7 +22,8 @@ class RecognisePage extends React.Component {
         super(props)
         this.state = {
             begin: false,
-            passedChars: []
+            passedChars: [],
+            judging: false,
         }
     }
 
@@ -74,9 +75,9 @@ class RecognisePage extends React.Component {
     }
 
     startRecognise() {
-        this.setState({begin: true})
+        this.setState({begin: true, judging: false})
         if(annyang) {
-        this.props.startRecognise()
+            this.props.startRecognise()
             const tryHanzi = (hanzi) => {
                 let candidates = pinyin(hanzi, {heteronym: true}).shift()
                 console.log("candidates", candidates)
@@ -90,7 +91,7 @@ class RecognisePage extends React.Component {
                 } else {
                     console.log('no')
                     this.dontRecognise()
-    }
+                }
                 console.log('汉字' + hanzi)
             }
             const dontKnow = this.dontRecognise.bind(this)
@@ -102,23 +103,59 @@ class RecognisePage extends React.Component {
             annyang.addCommands(commands, true)
         }
     }
+    randomOf(list){
+        return list[Math.floor(Math.random() * list.length)]
+    }
+
+    randomCompliments() {
+        return this.randomOf([
+            '',
+            '你真~棒啊!', 
+            '厉~害',
+            '记幸~不错',
+            '棒棒棒',
+            '还真是难不倒你啊',
+            '你记住了耶',
+            //'真他妈是个天才',
+            //'我就不信你全知道',
+        ])
+    }
+
+    randomImprovementDesired() {
+        return this.randomOf([
+            '',
+            '再想想看', 
+            '哎呀，答错了', 
+            '我佛慈悲',
+            //'我就知道你答不上来'
+        ])
+    }
+
     recognise() {
-        let compliments = ['你真~棒!', '厉~害', '记性~不错', '棒棒棒']
-        speak('答对了!' + compliments[Math.floor(Math.random() * compliments.length)]).then(x => {
+        console.log('recognise')
+        this.setState({judging: true})
+        speak('答对了!' + this.randomCompliments()).then(x => {
+            console.log('speak.then')
             if (!this._isMounted) {
+                console.log('speak.then !mounted')
                 return
             }
+            console.log('speak.the setState judging false')
+            this.setState({judging: false})
             if (this.props.quizQueue.length > 0) {
                 this.props.recognise(this.props.quizQueue[0], true)
                 this.setState({passedChars: [...this.state.passedChars, this.props.quizQueue[0]]})
             }
         })
     }
+
     dontRecognise() {
-        speak('这个字念' + this.props.quizQueue[0]).then(x => {
+        this.setState({judging: true})
+        speak(this.randomImprovementDesired() + '，这个字念' + this.props.quizQueue[0]).then(x => {
             if (!this._isMounted) {
                 return
             }
+            this.setState({judging: false})
             if (this.props.quizQueue.length > 0) {
                 this.props.recognise(this.props.quizQueue[0], false)
                 //this.play();
@@ -217,7 +254,7 @@ class RecognisePage extends React.Component {
                         <ButtonGroup className="d-flex">
                         { this.state.begin ? (
                         <>
-                            <Button variant="primary" onClick={this.recognise.bind(this)}>
+                            <Button variant="primary" onClick={this.recognise.bind(this)} disabled={this.state.judging}>
                                 <MdDone/>
                             </Button>
                             {window.speechSynthesis && typeof window.speechSynthesis.speak === "function" ? (
@@ -225,7 +262,7 @@ class RecognisePage extends React.Component {
                                 <GiSpeaker/>
                             </Button>
                             ) : null}
-                            <Button variant="primary" onClick={this.dontRecognise.bind(this)}>
+                            <Button variant="primary" onClick={this.dontRecognise.bind(this)} disabled={this.state.judging}>
                                 <MdClose/>
                             </Button>
                             </>
