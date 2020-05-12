@@ -56,15 +56,18 @@ export default function(state = initialState, action) {
       };
     }
     case START_RECOGNISE: {
-        return {
-            ...state,
-            recogniseHistory: [...state.recogniseHistory || [], { 
-              date: new Date(),
-              newChar: state.newChar,
-              reviewChar: state.reviewChar,
-              finishDate: null
-            }]
-        };
+      let recogniseHistory = state.recogniseHistory instanceof Array ? state.recogniseHistory : []
+      let newChar = state.newChar instanceof Array ? state.newChar : []
+      let reviewChar = state.reviewChar instanceof Array ? state.reviewChar : []
+      return {
+        ...state,
+        recogniseHistory: [...recogniseHistory, { 
+          date: new Date(),
+          newChar: newChar,
+          reviewChar: reviewChar,
+          finishDate: null
+        }]
+      };
     }
     case RECOGNISE: {
       const { theChar, recognised } = action.payload;

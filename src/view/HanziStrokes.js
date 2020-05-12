@@ -4,6 +4,8 @@ import HanziWriter from 'hanzi-writer'
 import HanziStroke from './HanziStroke'
 
 class HanziStrokes extends React.Component {
+    _mounted = false
+
     constructor(props){
         super(props)
 
@@ -13,10 +15,13 @@ class HanziStrokes extends React.Component {
     }
 
     componentDidMount() {
+        this._mounted = true
         //console.log('HanziStrokes.componentDidMount', this.props.char, this.props.size)
-        let self = this;
+        let self = this
         HanziWriter.loadCharacterData(this.props.char).then(function(charData){
-            self.setState({strokes: charData.strokes})
+            if (self._mounted) {
+                self.setState({strokes: charData.strokes})
+            }
         })
     }
 
@@ -25,11 +30,16 @@ class HanziStrokes extends React.Component {
         let self = this;
         if (this.props.char !== prevProps.char) {
             HanziWriter.loadCharacterData(this.props.char).then(function(charData){
-                self.setState({strokes: charData.strokes})
+                if (self._mounted) {
+                    self.setState({strokes: charData.strokes})
+                }
             })
         }
     }
 
+    componentWillUnmount() {
+        this._mounted = false
+    }
     render() {
         return (
             <>

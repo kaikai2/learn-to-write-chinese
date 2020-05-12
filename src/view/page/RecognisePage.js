@@ -76,8 +76,8 @@ class RecognisePage extends React.Component {
 
     startRecognise() {
         this.setState({begin: true, judging: false})
+        this.props.startRecognise()
         if(annyang) {
-            this.props.startRecognise()
             const tryHanzi = (hanzi) => {
                 let candidates = pinyin(hanzi, {heteronym: true}).shift()
                 console.log("candidates", candidates)
