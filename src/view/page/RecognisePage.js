@@ -87,14 +87,14 @@ class RecognisePage extends React.Component {
                 console.log("same", same)
                 if (same.length > 0) {
                     console.log('yes')
-                    this.recognise()
+                    this.recognise(true)
                 } else {
                     console.log('no')
-                    this.dontRecognise()
+                    this.recognise(false)
                 }
                 console.log('汉字' + hanzi)
             }
-            const dontKnow = this.dontRecognise.bind(this)
+            const dontKnow = this.recognise.bind(this, false)
             var commands = {
                 '不认识': dontKnow,
                 '不知道': dontKnow,
@@ -126,38 +126,29 @@ class RecognisePage extends React.Component {
             '',
             '再想想看', 
             '哎呀，答错了', 
-            '我佛慈悲',
+            //'我佛慈悲',
             //'我就知道你答不上来'
         ])
     }
 
-    recognise() {
+    recognise(correct) {
         this.setState({judging: true})
-        speak('答对了!' + this.randomCompliments()).then(x => {
+        const response = correct ? '答对了!' + this.randomCompliments() : this.randomImprovementDesired() + '，这个字念' + this.props.quizQueue[0]
+
+        speak(response).then(x => {
             if (!this._isMounted) {
                 return
             }
             this.setState({judging: false})
             if (this.props.quizQueue.length > 0) {
-                this.props.recognise(this.props.quizQueue[0], true)
-                this.setState({passedChars: [...this.state.passedChars, this.props.quizQueue[0]]})
+                this.props.recognise(this.props.quizQueue[0], correct)
+                if (correct) {
+                    this.setState({passedChars: [...this.state.passedChars, this.props.quizQueue[0]]})
+                }
             }
         })
     }
 
-    dontRecognise() {
-        this.setState({judging: true})
-        speak(this.randomImprovementDesired() + '，这个字念' + this.props.quizQueue[0]).then(x => {
-            if (!this._isMounted) {
-                return
-            }
-            this.setState({judging: false})
-            if (this.props.quizQueue.length > 0) {
-                this.props.recognise(this.props.quizQueue[0], false)
-                //this.play();
-            }
-        })
-    }
     progress(key) {
         let totalChar = new Set(this.props.newChars.concat(this.props.reviewChars))
         let total = totalChar.size
@@ -250,7 +241,7 @@ class RecognisePage extends React.Component {
                         <ButtonGroup className="d-flex">
                         { this.state.begin ? (
                         <>
-                            <Button variant="primary" onClick={this.recognise.bind(this)} disabled={this.state.judging}>
+                            <Button variant="primary" onClick={this.recognise.bind(this, true)} disabled={this.state.judging}>
                                 <MdDone/>
                             </Button>
                             {window.speechSynthesis && typeof window.speechSynthesis.speak === "function" ? (
@@ -258,7 +249,7 @@ class RecognisePage extends React.Component {
                                 <GiSpeaker/>
                             </Button>
                             ) : null}
-                            <Button variant="primary" onClick={this.dontRecognise.bind(this)} disabled={this.state.judging}>
+                            <Button variant="primary" onClick={this.recognise.bind(this, false)} disabled={this.state.judging}>
                                 <MdClose/>
                             </Button>
                             </>
