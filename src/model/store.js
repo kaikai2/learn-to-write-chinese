@@ -5,9 +5,9 @@ import throttle from 'lodash/throttle'
 
 
 const persistentState = loadState()
-const store = createStore(rootReducer,
-    persistentState,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = process.env.NODE_ENV === "production" ? 
+    createStore(rootReducer, persistentState) :
+    createStore(rootReducer, persistentState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 
 store.subscribe(throttle(() => {
     saveState(store.getState())
