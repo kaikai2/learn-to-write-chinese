@@ -10,9 +10,11 @@ import { Hanzi, HanziList, RecogniseHistoryItem, RecogniseProgressBar, VoiceText
 import { getNewCharList, getReviewCharList, getQuizCharQueue, getNewListIndex, getWrongChars, getRecogniseHistory } from '../../model/selectors'
 import { prepareRecognise, startRecognise, recognise, changeNew } from '../../model/actions'
 import { speak } from '../../module/speak'
+import {descriptiveWords} from '../../module/words'
 
 import annyang from 'annyang'
 import pinyin from 'pinyin'
+
 //import { SpeechKITT } from '../../../node_modules/speechkitt/src/speechkitt'
 
 class RecognisePage extends React.Component {
@@ -171,7 +173,10 @@ class RecognisePage extends React.Component {
 
     play() {
         if (this.props.quizQueue.length > 0){
-            speak(this.props.quizQueue[0])
+            const theChar = this.props.quizQueue[0]
+            let toSpeak = descriptiveWords(theChar)
+            console.log(toSpeak)
+            speak(toSpeak)
         }
     }
     render() {

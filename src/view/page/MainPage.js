@@ -7,6 +7,9 @@ import { GiSpeaker } from 'react-icons/gi'
 
 import { getNewCharList } from '../../model/selectors'
 
+import { speak } from '../../module/speak'
+import {descriptiveWords} from '../../module/words'
+
 import { Hanzi, HanziStrokes } from '..'
 
 class MainPage extends React.Component {
@@ -33,18 +36,10 @@ class MainPage extends React.Component {
     }
 
     play() {
-        var synth = window.speechSynthesis;
-        if (synth && typeof synth.speak === "function"){
-            var utterThis = new SpeechSynthesisUtterance(this.props.newChars[this.state.curIndex]);
-            var zhVoices = synth.getVoices().filter(v => v.lang.startsWith('zh'));
-            console.log(zhVoices);
-            var sortedVoices = Array.prototype.concat.apply([], 
-                ['zh-CN', 'zh-HK', 'zh-TW'].map(c => zhVoices.filter(v => v.lang === c)));
-            if (sortedVoices.length > 0) {
-                utterThis.voice = sortedVoices[0];
-            }
-            synth.speak(utterThis);
-        }
+        const theChar = this.props.newChars[this.state.curIndex]
+        let toSpeak = descriptiveWords(theChar)
+        console.log(toSpeak)
+        speak(toSpeak)
     }
     render() {
         return (
