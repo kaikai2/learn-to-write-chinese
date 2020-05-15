@@ -3,6 +3,7 @@ import React from 'react';
 import HanziWriter from 'hanzi-writer'
 import HanziField from './HanziField'
 import pinyin from 'pinyin'
+import { isEqual } from 'lodash'
 
 class Hanzi extends React.Component {
     
@@ -26,7 +27,7 @@ class Hanzi extends React.Component {
         this.writer.setCharacter(this.props.char || '字');
     }
     componentDidMount() {
-        //console.log('Hanzi.componentDidMount', this.props.char, this.props.size);
+        console.log('Hanzi.componentDidMount', this.props.char, this.props.size);
         this.writer = HanziWriter.create(this.selfRef.current, this.props.char || '字', {
             width: this.props.size,
             height: this.props.size,
@@ -37,15 +38,18 @@ class Hanzi extends React.Component {
         this.showWriter()
     }
     componentDidUpdate(){
-        //console.log('Hanzi.componentDidUpdate', this.props.char, this.props.size)
         this.showWriter()
     }
     componentWillUnmount() {
-        //console.log('Hanzi.componentWillUnmount', this.props.char)
         this.writer = null;
     }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return !isEqual(this.props, nextProps) ||
+            !isEqual(this.state, nextState)
+    }
+
     render() {
-        //console.log('Hanzi.render', this.props.size)
         return (
             <span className="hanzi-container">
                 <center>
