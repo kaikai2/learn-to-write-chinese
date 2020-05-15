@@ -34,8 +34,6 @@ class Hanzi extends React.Component {
             padding: 5,
             showOutline: true,
         })
-        window.writer= this.writer
-        this.showWriter()
     }
     componentDidUpdate(){
         this.showWriter()
