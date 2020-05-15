@@ -81,7 +81,7 @@ export default function(state = initialState, action) {
       let recogniseHistory = state.recogniseHistory
       if (!recognised) {
         if (quizQueue.length > 3) {
-          var i = Math.floor(random(seed++) * quizQueue.length - 3) + 3
+          var i = Math.floor(random(seed++) * (quizQueue.length - 3)) + 3
           quizQueue.push(quizQueue[i])
           quizQueue[i] = theChar
         } else {
