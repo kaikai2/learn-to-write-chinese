@@ -7,7 +7,7 @@ class NavList extends React.Component {
         return (
             <Nav variant="tabs" defaultActiveKey="/home">
                 {this.props.entries.map((e,i) => (
-                    <Nav.Item>
+                    <Nav.Item key={i}>
                         <Nav.Link href="#" 
                             eventKey={"link-" + i.toString()} 
                             active={this.props.activeTab === i} 

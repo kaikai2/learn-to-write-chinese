@@ -1,5 +1,5 @@
 
-export const getCharsState = store => store.chars;
+export const getCharsState = store => store.chars
 
 export const getNewCharList = store => 
     getCharsState(store) ? getCharsState(store).newChar : []
@@ -27,3 +27,5 @@ export const getNewListIndex = store =>
 
 export const getRecogniseHistory = store => 
     getCharsState(store) ? getCharsState(store).recogniseHistory : []
+
+export const getSettings = store => store.settings

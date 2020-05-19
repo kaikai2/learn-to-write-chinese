@@ -1,14 +1,49 @@
-import React from 'react';
+import React from 'react'
 import { connect }  from 'react-redux'
 
-import { Button, ButtonGroup, Container, Row, Col, Modal, ListGroup } from 'react-bootstrap'
-import { MdDone, MdClose, MdChevronLeft, MdChevronRight } from 'react-icons/md'
-import { GiUnicorn, GiSpeaker } from 'react-icons/gi'
+import { 
+    Button, 
+    ButtonGroup, 
+    Container, 
+    Row,
+    Col, 
+    Modal, 
+    ListGroup 
+} from 'react-bootstrap'
+import { 
+    MdDone, 
+    MdClose, 
+    MdChevronLeft, 
+    MdChevronRight 
+} from 'react-icons/md'
+import { 
+    GiUnicorn, 
+    GiSpeaker 
+} from 'react-icons/gi'
 
-import { Hanzi, HanziList, RecogniseHistoryItem, RecogniseProgressBar, VoiceText } from '..'
+import { 
+    Hanzi, 
+    HanziList, 
+    RecogniseHistoryItem, 
+    RecogniseProgressBar, 
+    VoiceText 
+} from '..'
 
-import { getNewCharList, getReviewCharList, getQuizCharQueue, getNewListIndex, getWrongChars, getRecogniseHistory } from '../../model/selectors'
-import { prepareRecognise, startRecognise, recognise, changeNew } from '../../model/actions'
+import { 
+    getNewCharList, 
+    getReviewCharList, 
+    getQuizCharQueue, 
+    getNewListIndex,
+    getWrongChars, 
+    getRecogniseHistory,
+    getSettings
+} from '../../model/selectors'
+import { 
+    prepareRecognise, 
+    startRecognise, 
+    recognise, 
+    changeNew,
+} from '../../model/actions'
 import { speak } from '../../module/speak'
 import {descriptiveWords} from '../../module/words'
 
@@ -110,32 +145,17 @@ class RecognisePage extends React.Component {
     }
 
     randomCompliments() {
-        return this.randomOf([
-            '',
-            '你真~棒啊!', 
-            '厉~害',
-            '记幸~不错',
-            '棒棒棒',
-            '还真是难不倒你啊',
-            '你记住了耶',
-            //'真他妈是个天才',
-            //'我就不信你全知道',
-        ])
+        return this.props.settings.complimentsEnabled ? this.randomOf(this.props.settings.compliments) : ''
     }
 
-    randomImprovementDesired() {
-        return this.randomOf([
-            '',
-            '再想想看', 
-            '哎呀，答错了', 
-            //'我佛慈悲',
-            //'我就知道你答不上来'
-        ])
+    randomEncouragement() {
+        // TODO: should use encouragementEnabled
+        return this.props.settings.complimentsEnabled ? this.randomOf(this.props.settings.encouragement) : ''
     }
 
     recognise(correct) {
         this.setState({judging: true})
-        const response = correct ? '答对了!' + this.randomCompliments() : this.randomImprovementDesired() + '，这个字念' + this.props.quizQueue[0]
+        const response = correct ? '答对了!' + this.randomCompliments() : this.randomEncouragement() + '，这个字念' + this.props.quizQueue[0]
 
         speak(response).then(x => {
             if (!this._isMounted) {
@@ -174,7 +194,7 @@ class RecognisePage extends React.Component {
     play() {
         if (this.props.quizQueue.length > 0){
             const theChar = this.props.quizQueue[0]
-            let toSpeak = descriptiveWords(theChar)
+            let toSpeak = this.props.settings.wordsEnabled ? descriptiveWords(theChar) : theChar
             console.log(toSpeak)
             speak(toSpeak)
         }
@@ -312,6 +332,7 @@ export default connect(
         newListIndex: getNewListIndex(state),
         wrongChars: getWrongChars(state),
         recogniseHistory: getRecogniseHistory(state),
+        settings: getSettings(state)
     }),
     {
         prepareRecognise,
