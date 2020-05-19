@@ -21,6 +21,7 @@
     "react-scripts": "3.4.1",
     "redux": "^4.0.5"
   },
+  "homepage": "https://kaikai2.github.io/learn-to-write-chinese-pages",
   "scripts": {
     "start": "react-scripts start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
