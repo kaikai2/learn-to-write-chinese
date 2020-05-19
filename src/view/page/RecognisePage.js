@@ -149,8 +149,7 @@ class RecognisePage extends React.Component {
     }
 
     randomEncouragement() {
-        // TODO: should use encouragementEnabled
-        return this.props.settings.complimentsEnabled ? this.randomOf(this.props.settings.encouragement) : ''
+        return this.props.settings.encouragementEnabled ? this.randomOf(this.props.settings.encouragement) : ''
     }
 
     recognise(correct) {
