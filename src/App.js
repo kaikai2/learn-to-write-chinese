@@ -1,8 +1,9 @@
 import React from 'react'
 import { Nav } from 'react-bootstrap'
 import './App.css'
-import { MainPage, RecognisePage, HistoryPage, PlayGroundPage } from './view/page'
+import { MainPage, RecognisePage, HistoryPage, PlayGroundPage, SettingsPage } from './view/page'
 import { debounce } from 'lodash'
+import { NavList } from './view'
 
 class App extends React.Component {
   constructor(props) {
@@ -14,6 +15,17 @@ class App extends React.Component {
       optimalCharSize: 100,
     }
   }
+  navListEntries = [{
+      name: '学写汉字',
+    }, {
+      name: '测试',
+    }, {
+      name: '历史',
+    }, {
+      name: '游乐场',
+    }, {
+      name: '设置',
+    }]
   componentDidMount() {
     this.deboucedUpdateWindowDimensions = debounce(this.updateWindowDimensions.bind(this), 200)
     this.updateWindowDimensions()
@@ -28,6 +40,9 @@ class App extends React.Component {
     let res = Math.max(100, Math.min(window.innerWidth, window.innerHeight) * 0.8)
     //console.log("optimalCharSize=", res)
     this.setState({ optimalCharSize: res });
+  }
+  onTabChange(activeTab) {
+    this.setState({activeTab})
   }
   renderPage() {
     switch(this.state.activeTab) {
@@ -48,26 +63,21 @@ class App extends React.Component {
         return (
           <PlayGroundPage optimalCharSize={this.state.optimalCharSize}/>
         )
+      case 4:
+        return (
+          <SettingsPage optimalCharSize={this.state.optimalCharSize}/>
+        )
     }
   }
   render() {
     return (
       <>
-      <Nav variant="tabs" defaultActiveKey="/home">
-        <Nav.Item>
-          <Nav.Link href="#" active={this.state.activeTab === 0} onClick={e => this.setState({activeTab: 0})}>学写汉字</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="link-1" active={this.state.activeTab === 1} onClick={e => this.setState({activeTab: 1})}>测试</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="link-1" active={this.state.activeTab === 2} onClick={e => this.setState({activeTab: 2})}>历史</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="link-1" active={this.state.activeTab === 3} onClick={e => this.setState({activeTab: 3})}>游乐场</Nav.Link>
-        </Nav.Item>
-      </Nav>
-      {this.renderPage()}
+        <NavList entries={this.navListEntries} 
+          activeTab={this.state.activeTab}
+          onChange={this.onTabChange.bind(this)} 
+          variant="tabs" 
+          defaultActiveKey="/home"/>
+        {this.renderPage()}
       </>
     );
   }
