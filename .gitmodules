@@ -1,3 +1,3 @@
-[submodule "build"]
-	path = build
+[submodule "dist"]
+	path = dist
 	url = https://github.com/kaikai2/learn-to-write-chinese-pages.git
