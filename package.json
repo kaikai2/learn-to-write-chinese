@@ -25,7 +25,7 @@
   "scripts": {
     "start": "PUBLIC_URL=http://localhost:3000/ react-scripts start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
-    "publish": "sync -a ./build/ ./dist --delete --exclude=\".git\" --exclude=\"LICENSE\" --exclude=\"README.md\"",
+    "publish": "rsync -a ./build/ ./dist --delete --exclude=\".git\" --exclude=\"LICENSE\" --exclude=\"README.md\"",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
