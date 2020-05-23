@@ -13,7 +13,8 @@ class SettingsPage extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            newCompliment: ''
+            newCompliment: '',
+            newEncouragement: ''
         }
     }
     booleanEnabled(key, e) {
@@ -30,6 +31,18 @@ class SettingsPage extends React.Component {
     addCompliment() {
         let newCompliments = [...this.props.settings.compliments, this.state.newCompliment]
         this.props.changeSettings('compliments', newCompliments)
+    }
+    removeEncouragement(index) {
+        let newEncouragement = [...this.props.settings.encouragement]
+        newEncouragement.splice(index, 1)
+        this.props.changeSettings('encouragement', newEncouragement)
+    }    
+    changeNewEncouragement(e) {
+        this.setState({newEncouragement: e.target.value})
+    }
+    addEncouragement() {
+        let newEncouragement = [...this.props.settings.encouragement, this.state.newEncouragement]
+        this.props.changeSettings('encouragement', newEncouragement)
     }
     render() {
         return (
@@ -57,9 +70,9 @@ class SettingsPage extends React.Component {
                                         ))}
                                         </ListGroup>
                                         <Form.Control type="text" 
-                                        value={this.state.newCompliment} 
-                                        onChange={this.changeNewCompliment.bind(this)} 
-                                        placeholder="新的称赞语" />
+                                            value={this.state.newCompliment} 
+                                            onChange={this.changeNewCompliment.bind(this)} 
+                                            placeholder="新的称赞语" />
                                         <Button onClick={this.addCompliment.bind(this)}><MdAdd/></Button>
                                     </>
                                 )}
@@ -73,6 +86,24 @@ class SettingsPage extends React.Component {
                                     label="答错时给予鼓励"
                                     onChange={this.booleanEnabled.bind(this, 'encouragementEnabled')}
                                     />
+                                {this.props.settings.encouragementEnabled && (
+                                    <>
+                                        <ListGroup>
+                                        {this.props.settings.encouragement instanceof Array &&
+                                        this.props.settings.encouragement.map((c,i) => (
+                                            <ListGroup.Item key={i.toString()}>
+                                                {c}
+                                                <Button onClick={e => this.removeEncouragement(i)}><MdRemove/></Button>
+                                            </ListGroup.Item>
+                                        ))}
+                                        </ListGroup>
+                                        <Form.Control type="text" 
+                                            value={this.state.newEncouragement} 
+                                            onChange={this.changeNewEncouragement.bind(this)} 
+                                            placeholder="新的鼓励语" />
+                                        <Button onClick={this.addEncouragement.bind(this)}><MdAdd/></Button>
+                                    </>
+                                )}
                             </Form.Group>
 
                             <Form.Group>
