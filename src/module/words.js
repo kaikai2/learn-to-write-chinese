@@ -1,12 +1,12 @@
-
-import {getEntries} from 'chinese-lexicon'
+import {getStatistics} from 'chinese-lexicon/statistics'
 import {shuffle} from 'lodash'
 
+
 export const descriptiveWords = theChar => {
-    const entries = getEntries(theChar)
+    const topWords = getStatistics({simp: theChar, trad: theChar, pinyin: ''}).topWords
     let toSpeak = theChar
-    if (entries.length > 0){
-        const candidates = shuffle(entries[0].statistics.topWords.filter(e => 
+    if (topWords.length > 0){
+        const candidates = shuffle(topWords.filter(e => 
             e.word.length > theChar.length && 
             e.share > 0.01 &&
             e.word.includes(theChar)
