@@ -49,7 +49,7 @@ class SettingsPage extends React.Component {
     }
     version() {
         moment.locale('zh-cn')
-        const buildDate = moment(process.env.APP_BUILD_DATE).format('LLLL')
+        const buildDate = moment.unix(+process.env.REACT_APP_BUILD_DATE).format('LLLL')
         return `当前版本: ${process.env.REACT_APP_VERSION} 生成于 ${buildDate}`
     }
 
