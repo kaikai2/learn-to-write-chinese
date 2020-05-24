@@ -21,8 +21,8 @@ class App extends React.Component {
       name: '测试',
     }, {
       name: '历史',
-    }, {
-      name: '游乐场',
+    //}, {
+    //  name: '游乐场',
     }, {
       name: '设置',
     }]
@@ -59,11 +59,12 @@ class App extends React.Component {
         return (
           <HistoryPage optimalCharSize={this.state.optimalCharSize}/>
         )
+        /*
       case 3:
         return (
           <PlayGroundPage optimalCharSize={this.state.optimalCharSize}/>
-        )
-      case 4:
+        )*/
+      case 3:
         return (
           <SettingsPage optimalCharSize={this.state.optimalCharSize}/>
         )

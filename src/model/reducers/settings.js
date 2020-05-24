@@ -1,19 +1,19 @@
 import { CHANGE_SETTINGS, RESET_SETTINGS } from "../actionTypes"
 
 const initialState = {
-    complimentsEnabled: false,
+    complimentsEnabled: true,
     compliments: [
         '',
         '你真~棒啊!', 
         '厉~害',
-        '记幸~不错',
+        '记性~不错',
         '棒棒棒',
         '还真是难不倒你啊',
-        '你记住了耶',
+        '你记住了～诶',
         //'真他妈是个天才',
         //'我就不信你全知道',
     ],
-    encouragementEnabled: false,
+    encouragementEnabled: true,
     encouragement: [
         '',
         '再想想看', 

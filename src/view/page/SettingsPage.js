@@ -1,11 +1,13 @@
 import React from 'react'
 import { connect }  from 'react-redux'
 
-import { Button, Form, Container, Row, Col, ListGroup } from 'react-bootstrap'
+import { Button, Form, Container, Row, Col, ListGroup, InputGroup } from 'react-bootstrap'
 import { MdAdd, MdRemove } from 'react-icons/md'
-
+import { GiSpeaker } from 'react-icons/gi'
 import { changeSettings, resetSettings } from '../../model/actions'
 import { getSettings } from '../../model/selectors'
+import { VoiceText } from '..'
+import { speak } from '../../module/speak'
 
 
 class SettingsPage extends React.Component {
@@ -60,20 +62,25 @@ class SettingsPage extends React.Component {
                                     />
                                 {this.props.settings.complimentsEnabled && (
                                     <>
-                                        <ListGroup>
+                                        <ListGroup variant="flush">
                                         {this.props.settings.compliments instanceof Array &&
                                         this.props.settings.compliments.map((c,i) => (
                                             <ListGroup.Item key={i.toString()}>
-                                                {c}
-                                                <Button onClick={e => this.removeCompliments(i)}><MdRemove/></Button>
+                                                <VoiceText text={c}/>
+                                                <Button className="float-right" onClick={e => this.removeCompliments(i)}><MdRemove/></Button>
                                             </ListGroup.Item>
                                         ))}
                                         </ListGroup>
-                                        <Form.Control type="text" 
-                                            value={this.state.newCompliment} 
-                                            onChange={this.changeNewCompliment.bind(this)} 
-                                            placeholder="新的称赞语" />
-                                        <Button onClick={this.addCompliment.bind(this)}><MdAdd/></Button>
+                                        <InputGroup>
+                                            <Form.Control type="text" 
+                                                value={this.state.newCompliment} 
+                                                onChange={this.changeNewCompliment.bind(this)} 
+                                                placeholder="新的称赞语" />
+                                            <InputGroup.Append>
+                                                <Button variant="outline-info" onClick={speak.bind(this, this.state.newCompliment, true)}><GiSpeaker/></Button>
+                                                <Button onClick={this.addCompliment.bind(this)}><MdAdd/></Button>
+                                            </InputGroup.Append>
+                                        </InputGroup>
                                     </>
                                 )}
                             </Form.Group>
@@ -88,20 +95,25 @@ class SettingsPage extends React.Component {
                                     />
                                 {this.props.settings.encouragementEnabled && (
                                     <>
-                                        <ListGroup>
+                                        <ListGroup variant="flush">
                                         {this.props.settings.encouragement instanceof Array &&
                                         this.props.settings.encouragement.map((c,i) => (
                                             <ListGroup.Item key={i.toString()}>
-                                                {c}
-                                                <Button onClick={e => this.removeEncouragement(i)}><MdRemove/></Button>
+                                                <VoiceText text={c}/>
+                                                <Button className="float-right" onClick={e => this.removeEncouragement(i)}><MdRemove/></Button>
                                             </ListGroup.Item>
                                         ))}
                                         </ListGroup>
-                                        <Form.Control type="text" 
-                                            value={this.state.newEncouragement} 
-                                            onChange={this.changeNewEncouragement.bind(this)} 
-                                            placeholder="新的鼓励语" />
-                                        <Button onClick={this.addEncouragement.bind(this)}><MdAdd/></Button>
+                                        <InputGroup>
+                                            <Form.Control type="text" 
+                                                value={this.state.newEncouragement} 
+                                                onChange={this.changeNewEncouragement.bind(this)} 
+                                                placeholder="新的鼓励语" />
+                                            <InputGroup.Append>
+                                                <Button variant="outline-info" onClick={speak.bind(this, this.state.newEncouragement, true)}><GiSpeaker/></Button>
+                                                <Button onClick={this.addEncouragement.bind(this)}><MdAdd/></Button>
+                                            </InputGroup.Append>
+                                        </InputGroup>
                                     </>
                                 )}
                             </Form.Group>

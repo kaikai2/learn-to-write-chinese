@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Button } from 'react-bootstrap'
+import { Button, Badge } from 'react-bootstrap'
 import { GiSpeaker } from 'react-icons/gi'
 import { speak } from '../module/speak'
 
@@ -39,13 +39,13 @@ class VoiceText extends React.Component {
 
     render() {
         return (
-            <>
+            <span onClick={this.doSpeak.bind(this)}>
                 {this.props.text}
                 {" "}
-                <Button variant="outline-info" onClick={this.doSpeak.bind(this)} disabled={!this.props.doubleSpeak && this.state.speaking}>
-                    <GiSpeaker  />
-                </Button>
-            </>
+                <Badge pill variant="info" className={this.state.speaking ? "blinking" : ""}>
+                    <GiSpeaker/>
+                </Badge>
+            </span>
         )
     }
 }
