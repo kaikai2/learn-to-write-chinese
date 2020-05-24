@@ -23,8 +23,8 @@
   },
   "homepage": "https://kaikai2.github.io/learn-to-write-chinese-pages",
   "scripts": {
-    "start": "PUBLIC_URL=http://localhost:3000/ react-scripts start",
-    "build": "GENERATE_SOURCEMAP=false react-scripts build",
+    "start": "APP_BUILD_DATE=`date` REACT_APP_VERSION=$npm_package_version PUBLIC_URL=http://localhost:3000/ react-scripts start",
+    "build": "APP_BUILD_DATE=`date` REACT_APP_VERSION=$npm_package_version GENERATE_SOURCEMAP=false react-scripts build",
     "publish": "rsync -a ./build/ ./dist --delete --exclude=\".git\" --exclude=\"LICENSE\" --exclude=\"README.md\"",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

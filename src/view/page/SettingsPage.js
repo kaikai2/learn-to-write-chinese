@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect }  from 'react-redux'
+import moment from 'moment/min/moment-with-locales'
 
-import { Button, Form, Container, Row, Col, ListGroup, InputGroup } from 'react-bootstrap'
+import { Button, Form, Container, Row, Col, ListGroup, InputGroup, Alert } from 'react-bootstrap'
 import { MdAdd, MdRemove } from 'react-icons/md'
 import { GiSpeaker } from 'react-icons/gi'
 import { changeSettings, resetSettings } from '../../model/actions'
@@ -46,9 +47,22 @@ class SettingsPage extends React.Component {
         let newEncouragement = [...this.props.settings.encouragement, this.state.newEncouragement]
         this.props.changeSettings('encouragement', newEncouragement)
     }
+    version() {
+        moment.locale('zh-cn')
+        const buildDate = moment(process.env.APP_BUILD_DATE).format('LLLL')
+        return `当前版本: ${process.env.REACT_APP_VERSION} 生成于 ${buildDate}`
+    }
+
     render() {
         return (
             <Container fluid>
+                <Row className="mt-1">
+                    <Col>
+                        <Alert variant='primary'>
+                            {this.version()}
+                        </Alert>
+                    </Col>
+                </Row>
                 <Row className="mt-1">
                     <Col>
                         <Form>
