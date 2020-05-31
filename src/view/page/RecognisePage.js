@@ -198,6 +198,14 @@ class RecognisePage extends React.Component {
             speak(toSpeak)
         }
     }
+
+    recentRecogniseHistory() {
+        let list = []
+        if (this.props.recogniseHistory instanceof Array){
+            list = list.concat(this.props.recogniseHistory.slice(-5))
+        }
+        return list.reverse()
+    }
     render() {
         return (
             <Container fluid>
@@ -292,8 +300,7 @@ class RecognisePage extends React.Component {
                 <Row className="mt-1">
                     <Col>
                         <ListGroup>
-                        {this.props.recogniseHistory instanceof Array &&
-                        this.props.recogniseHistory.slice(-5).reverse().map((r, i) => (
+                        {this.recentRecogniseHistory().map((r, i) => (
                             <ListGroup.Item key={i} as={RecogniseHistoryItem} {...r}/>
                         ))}
                         </ListGroup>

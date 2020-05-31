@@ -8,14 +8,20 @@ import { RecogniseHistoryItem } from '..'
 
 class HistoryPage extends React.Component {
 
+    recentRecogniseHistory() {
+        let list = []
+        if (this.props.recogniseHistory instanceof Array){
+            list = list.concat(this.props.recogniseHistory.slice(-5))
+        }
+        return list.reverse()
+    }
     render() {
         return (
             <Container>
                 <Row className="mt-1">
                     <Col>
                         <ListGroup>
-                        {this.props.recogniseHistory instanceof Array &&
-                        this.props.recogniseHistory.reverse().map((r, i) => (
+                        {this.recentRecogniseHistory().map((r, i) => (
                             <ListGroup.Item key={i} as={RecogniseHistoryItem} {...r}/>
                         ))}
                         </ListGroup>
