@@ -98,7 +98,7 @@ class MainPage extends React.Component {
                                 ref={i => this.hanzi = i}
                                 size={this.props.optimalCharSize}
                                 char={this.props.newChars[this.state.curIndex]} 
-                                clickPlay={true}
+                                clickPlay={!this.state.writing}
                                 quiz={true}/>
                     
                             <HanziStrokes 
