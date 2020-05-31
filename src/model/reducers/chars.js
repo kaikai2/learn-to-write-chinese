@@ -1,5 +1,6 @@
 import { PREPARE_RECOGNISE, START_RECOGNISE, RECOGNISE } from "../actionTypes";
 import { CharSheets} from "../charSheets"
+import { toPairs, filter } from 'lodash'
 
 const initialState = {
   newChar: [],
@@ -85,6 +86,9 @@ export default function(state = initialState, action) {
           quizQueue.push(quizQueue[i])
           quizQueue[i] = theChar
         } else {
+          const {array, newSeed} = shuffle(filter(toPairs(state.charsToLearn), p => p[1].recognised).map(p => p[0]), seed)
+          seed = newSeed
+          quizQueue = quizQueue.concat(array.slice(0, 3 - quizQueue.length))
           quizQueue.push(theChar)
         }
       } else {
