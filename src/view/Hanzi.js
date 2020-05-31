@@ -19,6 +19,19 @@ class Hanzi extends React.Component {
         }
     }
 
+    quiz() {
+        const p = new Promise((resolve, reject) => {
+            if (this.props.quiz && this.writer) {
+                this.writer.quiz({
+                    onComplete: resolve
+                })
+            } else {
+                reject()
+            }
+        })
+        return p;
+    }
+
     showWriter() {
         //console.log('Hanzi.showWriter', this.props.char, this.state.currentChar, this.props.size)
         this.writer._options.width = this.props.size;
@@ -74,5 +87,6 @@ Hanzi.defaultProps = {
     showPinyin: true,
     size: 100,
     char: '字',
+    quiz: false,
 }
 export default Hanzi;
