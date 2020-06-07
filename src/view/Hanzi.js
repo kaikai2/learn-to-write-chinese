@@ -4,6 +4,7 @@ import HanziWriter from 'hanzi-writer'
 import HanziField from './HanziField'
 import pinyin from 'pinyin'
 import { isEqual } from 'lodash'
+import { charDataLoader } from '../module/hanziDataLoader'
 
 class Hanzi extends React.Component {
     _isMounted = false
@@ -41,10 +42,12 @@ class Hanzi extends React.Component {
 
     showWriter() {
         //console.log('Hanzi.showWriter', this.props.char, this.state.currentChar, this.props.size)
-        this.writer._options.width = this.props.size;
-        this.writer._options.height = this.props.size;
-        if (this.writer._char !== this.props.char) {
-            this.writer.setCharacter(this.props.char || '字');
+        if (this.writer._options.width !== this.props.size ||
+            this.writer._options.height !== this.props.size ||
+            this.writer._char !== this.props.char) {
+            this.writer._options.width = this.props.size
+            this.writer._options.height = this.props.size
+            this.writer.setCharacter(this.props.char || '字')
         }
     }
     componentDidMount() {
@@ -55,6 +58,7 @@ class Hanzi extends React.Component {
             height: this.props.size,
             padding: 5,
             showOutline: true,
+            charDataLoader: charDataLoader
         })
     }
     componentDidUpdate(){

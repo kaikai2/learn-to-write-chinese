@@ -2,6 +2,7 @@ import React from 'react';
 
 import HanziWriter from 'hanzi-writer'
 import HanziStroke from './HanziStroke'
+import { charDataLoader } from '../module/hanziDataLoader'
 
 class HanziStrokes extends React.Component {
     _mounted = false
@@ -18,7 +19,7 @@ class HanziStrokes extends React.Component {
         this._mounted = true
         //console.log('HanziStrokes.componentDidMount', this.props.char, this.props.size)
         let self = this
-        HanziWriter.loadCharacterData(this.props.char).then(function(charData){
+        HanziWriter.loadCharacterData(this.props.char, {charDataLoader}).then(function(charData){
             if (self._mounted) {
                 self.setState({strokes: charData.strokes})
             }
@@ -29,7 +30,7 @@ class HanziStrokes extends React.Component {
         //console.log('HanziStroke.componentDidUpdate', this.props.char, this.props.size)
         let self = this;
         if (this.props.char !== prevProps.char) {
-            HanziWriter.loadCharacterData(this.props.char).then(function(charData){
+            HanziWriter.loadCharacterData(this.props.char, {charDataLoader}).then(function(charData){
                 if (self._mounted) {
                     self.setState({strokes: charData.strokes})
                 }

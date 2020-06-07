@@ -73,7 +73,7 @@ class MainPage extends React.Component {
         return (
             <Container fluid>
                 <Row className="mt-1">
-                    <Col xs={8} md={3}>
+                    <Col xs={12} md={3}>
                         <h1>今日汉字</h1>
                     </Col>
                     <Col>

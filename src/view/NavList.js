@@ -1,22 +1,29 @@
 import React from 'react';
 
-import { Nav } from 'react-bootstrap'
+import { Navbar, Nav } from 'react-bootstrap'
 
 class NavList extends React.Component {
     render() {
         return (
-            <Nav variant="tabs" defaultActiveKey="/home">
-                {this.props.entries.map((e,i) => (
-                    <Nav.Item key={i}>
-                        <Nav.Link href="#" 
-                            eventKey={"link-" + i.toString()} 
-                            active={this.props.activeTab === i} 
-                            onClick={() => this.props.onChange(i)}>
-                            {e.name}
-                        </Nav.Link>
-                    </Nav.Item>
-                ))}
-            </Nav>
+            <Navbar bg="light" expand="sm">
+                <Navbar.Brand href="#home">学写汉字</Navbar.Brand>
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Collapse id="basic-navbar-nav">
+                    
+                    <Nav defaultActiveKey="/home">
+                        {this.props.entries.map((e,i) => (
+                            <Nav.Item key={i}>
+                                <Nav.Link href="#" 
+                                    eventKey={"link-" + i.toString()} 
+                                    active={this.props.activeTab === i} 
+                                    onClick={() => this.props.onChange(i)}>
+                                    {e.name}
+                                </Nav.Link>
+                            </Nav.Item>
+                        ))}
+                    </Nav>
+                </Navbar.Collapse>
+            </Navbar>
         )
     }
 }

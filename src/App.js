@@ -16,11 +16,11 @@ class App extends React.Component {
     }
   }
   navListEntries = [{
-      name: '学写汉字',
+      name: '生字学习',
     }, {
-      name: '测试',
+      name: '认字测试',
     }, {
-      name: '历史',
+      name: '学习历史',
     //}, {
     //  name: '游乐场',
     }, {

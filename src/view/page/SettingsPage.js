@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect }  from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
+import filesize from 'filesize'
 
 import { Button, Form, Container, Row, Col, ListGroup, InputGroup, Alert } from 'react-bootstrap'
 import { MdAdd, MdRemove } from 'react-icons/md'
@@ -9,7 +10,7 @@ import { changeSettings, resetSettings } from '../../model/actions'
 import { getSettings } from '../../model/selectors'
 import { VoiceText } from '..'
 import { speak } from '../../module/speak'
-
+import { cacheSize } from '../../module/hanziDataLoader'
 
 class SettingsPage extends React.Component {
 
@@ -60,6 +61,10 @@ class SettingsPage extends React.Component {
                     <Col>
                         <Alert variant='primary'>
                             {this.version()}
+                        </Alert>
+
+                        <Alert variant="info">
+                            当前缓存字库容量{filesize(cacheSize())}
                         </Alert>
                     </Col>
                 </Row>
