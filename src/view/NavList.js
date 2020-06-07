@@ -2,14 +2,14 @@ import React from 'react';
 
 import { Navbar, Nav } from 'react-bootstrap'
 
-import {ReactComponent as ReactLogo} from '../logo.svg'
+//import {ReactComponent as ReactLogo} from '../logo.svg'
 
 class NavList extends React.Component {
     render() {
         return (
             <Navbar bg="light" expand="sm">
                 <Navbar.Brand href="#home">
-                    <ReactLogo/>
+                    <img src={`${process.env.PUBLIC_URL}/logo192.png`} width="50" height="50"/>
                     {' '}
                     学写汉字
                 </Navbar.Brand>
