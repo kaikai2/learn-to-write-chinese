@@ -67,8 +67,8 @@ let updateCache = (char, data) => {
 
 export const charDataLoader = (char, onLoad, onError) => {
     let cache = getCache()
-    if (char in cache){
-        onLoad(cache[char])
+    if (char in cache.data){
+        onLoad(cache.data[char])
     } else {
         defaultCharDataLoader(char, (res) => {
             updateCache(char, res)
