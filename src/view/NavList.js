@@ -2,11 +2,17 @@ import React from 'react';
 
 import { Navbar, Nav } from 'react-bootstrap'
 
+import {ReactComponent as ReactLogo} from '../logo.svg'
+
 class NavList extends React.Component {
     render() {
         return (
             <Navbar bg="light" expand="sm">
-                <Navbar.Brand href="#home">学写汉字</Navbar.Brand>
+                <Navbar.Brand href="#home">
+                    <ReactLogo/>
+                    {' '}
+                    学写汉字
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     
