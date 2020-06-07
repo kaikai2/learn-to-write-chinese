@@ -1,13 +1,12 @@
 
-const chars = (/*"亮 星 我 明 树 叶 日 孩 红 "
+const chars = ("亮 星 我 明 树 叶 日 孩 红 "
     + "是 唱 子 友 习 戏 字 气 会 "
     + "见 早 鸡 黄 鸟 季 落 真 说 "
     + "跳 着 妹 东 就 还 快 得 西"
     + "东 捉 足 迷 球 很 爬 藏 向"
     + "对 叫 变 问 成 教 回 打 请"
-    + "过 虫 把 驮 鹅 河 礼 背 拿"*/
-    "里 后 谢 " +
-    "边 貌 班 幼 园 照 "
+    + "过 虫 把 驮 鹅 河 礼 背 拿"
+    + "里 后 谢 边 貌 班 幼 园 照 "
     + "婆 甜 梦 老 盒 尺 刀 时 正 "
     + "文 具 笔 画 长 放 用 总 尾 "
     + "巴 玉 尖 竹 苗 听 话 猴 猩"
@@ -48,15 +47,13 @@ const chars = (/*"亮 星 我 明 树 叶 日 孩 红 "
     + "稀 奇 祝 贺 哟 脑 呆 床 闹"
     + "钟 拨 准 备 其 实 轻 响 迟"
     + "已 叠 包 碗 写 冒 您 了").split(/ */);
-var line = 1;
+var line = 0;
 export var CharSheets = {
     length: 0
 };
 for (var i = 0; i < chars.length; i += 3) {
-    CharSheets["L" + line.toString()] = chars[i] + chars[i + 1] + chars[i + 2];
     line++;
+    CharSheets["L" + line.toString()] = chars[i] + chars[i + 1] + chars[i + 2];
 }
 
-CharSheets.length = line - 1;
-
-console.log(CharSheets);
+CharSheets.length = line
