@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Button, Badge } from 'react-bootstrap'
+import { Badge } from 'react-bootstrap'
 import { GiSpeaker } from 'react-icons/gi'
 import { speak } from '../module/speak'
 

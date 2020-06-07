@@ -10,7 +10,7 @@ class NavList extends React.Component {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     
-                    <Nav defaultActiveKey="/home">
+                    <Nav variant="pills" defaultActiveKey="/home">
                         {this.props.entries.map((e,i) => (
                             <Nav.Item key={i}>
                                 <Nav.Link href="#" 

@@ -1,7 +1,6 @@
 import React from 'react'
-import { Nav } from 'react-bootstrap'
 import './App.css'
-import { MainPage, RecognisePage, HistoryPage, PlayGroundPage, SettingsPage } from './view/page'
+import { MainPage, RecognisePage, HistoryPage, SettingsPage } from './view/page'
 import { debounce } from 'lodash'
 import { NavList } from './view'
 
@@ -21,8 +20,6 @@ class App extends React.Component {
       name: '认字测试',
     }, {
       name: '学习历史',
-    //}, {
-    //  name: '游乐场',
     }, {
       name: '设置',
     }]
@@ -59,11 +56,6 @@ class App extends React.Component {
         return (
           <HistoryPage optimalCharSize={this.state.optimalCharSize}/>
         )
-        /*
-      case 3:
-        return (
-          <PlayGroundPage optimalCharSize={this.state.optimalCharSize}/>
-        )*/
       case 3:
         return (
           <SettingsPage optimalCharSize={this.state.optimalCharSize}/>
