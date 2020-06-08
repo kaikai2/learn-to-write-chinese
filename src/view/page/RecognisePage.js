@@ -237,14 +237,19 @@ class RecognisePage extends React.Component {
                     <Row>
                         <Col>
                             <center>
-                                    <h1>今日生字</h1>
+                                <h1>
+                                    今日生字
+                                    ({this.props.newListIndex})
+                                </h1>
                             </center>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
                             <ButtonGroup className="d-flex">
-                                <Button variant="primary" onClick={e => this.changeNewIndex(this.props.newListIndex - 1)}>
+                                <Button variant="primary" 
+                                    disabled={this.props.newListIndex <= 1}
+                                    onClick={e => this.changeNewIndex(this.props.newListIndex - 1)}>
                                     <MdChevronLeft />
                                 </Button>
                                 <HanziList chars={this.props.newChars} size={50} className="mb-2"/>

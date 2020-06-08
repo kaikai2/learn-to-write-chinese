@@ -53,7 +53,7 @@ export var CharSheets = {
 };
 for (var i = 0; i < chars.length; i += 3) {
     line++;
-    CharSheets["L" + line.toString()] = chars[i] + chars[i + 1] + chars[i + 2];
+    CharSheets["L" + line.toString()] = chars.slice(i, i + 3).join('')
 }
 
 CharSheets.length = line

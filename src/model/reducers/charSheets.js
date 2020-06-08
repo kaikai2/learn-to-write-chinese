@@ -13,8 +13,6 @@ export default function(state = initialState, action) {
         let { newListIndex } = action.payload
         if (newListIndex < 1) {
             newListIndex = 1
-        } else if (newListIndex >= CharSheets.length) {
-            newListIndex = CharSheets.length
         }
         return {
             ...state,
