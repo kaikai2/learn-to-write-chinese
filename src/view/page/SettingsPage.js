@@ -91,7 +91,7 @@ class SettingsPage extends React.Component {
                                         ))}
                                         </ListGroup>
                                         <InputGroup>
-                                            <Form.Control type="text" 
+                                            <Form.Control type="search" 
                                                 value={this.state.newCompliment} 
                                                 onChange={this.changeNewCompliment.bind(this)} 
                                                 placeholder="新的称赞语" />
@@ -124,7 +124,7 @@ class SettingsPage extends React.Component {
                                         ))}
                                         </ListGroup>
                                         <InputGroup>
-                                            <Form.Control type="text" 
+                                            <Form.Control type="search" 
                                                 value={this.state.newEncouragement} 
                                                 onChange={this.changeNewEncouragement.bind(this)} 
                                                 placeholder="新的鼓励语" />
