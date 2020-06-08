@@ -4,7 +4,7 @@ import moment from 'moment/min/moment-with-locales'
 import filesize from 'filesize'
 
 import { Button, Form, Container, Row, Col, ListGroup, InputGroup, Alert } from 'react-bootstrap'
-import { MdAdd, MdRemove } from 'react-icons/md'
+import { MdAdd, MdDelete } from 'react-icons/md'
 import { GiSpeaker } from 'react-icons/gi'
 import { changeSettings, resetSettings } from '../../model/actions'
 import { getSettings } from '../../model/selectors'
@@ -86,7 +86,7 @@ class SettingsPage extends React.Component {
                                         this.props.settings.compliments.map((c,i) => (
                                             <ListGroup.Item key={i.toString()}>
                                                 <VoiceText text={c}/>
-                                                <Button className="float-right" onClick={e => this.removeCompliments(i)}><MdRemove/></Button>
+                                                <Button className="float-right" onClick={e => this.removeCompliments(i)}><MdDelete/></Button>
                                             </ListGroup.Item>
                                         ))}
                                         </ListGroup>
@@ -119,7 +119,7 @@ class SettingsPage extends React.Component {
                                         this.props.settings.encouragement.map((c,i) => (
                                             <ListGroup.Item key={i.toString()}>
                                                 <VoiceText text={c}/>
-                                                <Button className="float-right" onClick={e => this.removeEncouragement(i)}><MdRemove/></Button>
+                                                <Button className="float-right" onClick={e => this.removeEncouragement(i)}><MdDelete/></Button>
                                             </ListGroup.Item>
                                         ))}
                                         </ListGroup>

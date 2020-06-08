@@ -17,7 +17,7 @@ class HistoryPage extends React.Component {
     }
     render() {
         return (
-            <Container>
+            <Container fluid>
                 <Row className="mt-1">
                     <Col>
                         <ListGroup>
