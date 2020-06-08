@@ -12,6 +12,7 @@ class App extends React.Component {
       width: 0,
       height: 0,
       optimalCharSize: 100,
+      online: window.navigator.onLine
     }
   }
   navListEntries = [{
@@ -24,6 +25,18 @@ class App extends React.Component {
       name: '设置',
     }]
   componentDidMount() {
+
+    window.addEventListener('online', () => {
+      console.log('online')
+      this.setState({online: true})
+    })
+    window.addEventListener('offline', () => {
+      console.log('offline')
+      this.setState({online: false})
+    })
+    
+
+
     this.deboucedUpdateWindowDimensions = debounce(this.updateWindowDimensions.bind(this), 200)
     this.updateWindowDimensions()
     window.addEventListener('resize', this.deboucedUpdateWindowDimensions)
@@ -65,11 +78,13 @@ class App extends React.Component {
   render() {
     return (
       <>
-        <NavList entries={this.navListEntries} 
+        <NavList entries={this.navListEntries}
           activeTab={this.state.activeTab}
           onChange={this.onTabChange.bind(this)} 
           variant="tabs" 
-          defaultActiveKey="/home"/>
+          defaultActiveKey="/home"
+          online={this.state.online}
+          />
         {this.renderPage()}
       </>
     );

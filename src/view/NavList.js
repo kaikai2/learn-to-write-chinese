@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Navbar, Nav } from 'react-bootstrap'
 
+import { MdAirplanemodeActive } from 'react-icons/md'
+
 //import {ReactComponent as ReactLogo} from '../logo.svg'
 
 class NavList extends React.Component {
@@ -15,7 +17,6 @@ class NavList extends React.Component {
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-                    
                     <Nav variant="pills" defaultActiveKey="/home">
                         {this.props.entries.map((e,i) => (
                             <Nav.Item key={i}>
@@ -29,6 +30,9 @@ class NavList extends React.Component {
                         ))}
                     </Nav>
                 </Navbar.Collapse>
+                {this.props.online || (
+                    <MdAirplanemodeActive/>
+                )}
             </Navbar>
         )
     }
@@ -41,7 +45,8 @@ NavList.defaultPros = {
         name: 'Tab1',
     },{
         name: 'Tab2',
-    }]
+    }],
+    online: true,
 }
 
 export default NavList;
