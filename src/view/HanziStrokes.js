@@ -19,22 +19,26 @@ class HanziStrokes extends React.Component {
         this._mounted = true
         //console.log('HanziStrokes.componentDidMount', this.props.char, this.props.size)
         let self = this
-        HanziWriter.loadCharacterData(this.props.char, {charDataLoader}).then(function(charData){
-            if (self._mounted) {
-                self.setState({strokes: charData.strokes})
-            }
-        })
+        if (this.props.char) {
+            HanziWriter.loadCharacterData(this.props.char, {charDataLoader}).then(function(charData){
+                if (self._mounted) {
+                    self.setState({strokes: charData.strokes})
+                }
+            })
+        }
     }
 
     componentDidUpdate(prevProps, prevState){
         //console.log('HanziStroke.componentDidUpdate', this.props.char, this.props.size)
         let self = this;
         if (this.props.char !== prevProps.char) {
-            HanziWriter.loadCharacterData(this.props.char, {charDataLoader}).then(function(charData){
-                if (self._mounted) {
-                    self.setState({strokes: charData.strokes})
-                }
-            })
+            if (this.props.char){
+                HanziWriter.loadCharacterData(this.props.char, {charDataLoader}).then(function(charData){
+                    if (self._mounted) {
+                        self.setState({strokes: charData.strokes})
+                    }
+                })
+            }
         }
     }
 

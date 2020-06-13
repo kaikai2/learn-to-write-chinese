@@ -52,7 +52,7 @@ class Hanzi extends React.Component {
     }
     componentDidMount() {
         this._isMounted = true
-        console.log('Hanzi.componentDidMount', this.props.char, this.props.size);
+        //console.log('Hanzi.componentDidMount', this.props.char, this.props.size);
         this.writer = HanziWriter.create(this.selfRef.current, this.props.char || '字', {
             width: this.props.size,
             height: this.props.size,
