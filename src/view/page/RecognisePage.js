@@ -14,7 +14,9 @@ import {
     MdDone, 
     MdClose, 
     MdChevronLeft, 
-    MdChevronRight 
+    MdChevronRight, 
+    MdFullscreen,
+    MdFullscreenExit
 } from 'react-icons/md'
 import { 
     GiUnicorn, 
@@ -133,7 +135,8 @@ class TestView extends React.Component {
         super(props)
         this.state = {
             judging: false,
-            passedChars: []
+            passedChars: [],
+            fullView: false
         }
     }
 
@@ -193,7 +196,9 @@ class TestView extends React.Component {
         })
     }
 
-    
+    toggleFullView(){
+        this.setState({fullView: !this.state.fullView})
+    }
     randomOf(list){
         return list[Math.floor(Math.random() * list.length)]
     }
@@ -237,16 +242,20 @@ class TestView extends React.Component {
     render() {
         return (
             <Container fluid>
-                <Row className="mt-1">
-                    <Col>
-                        <RecogniseProgressBar progress={this.progress.bind(this)}/>
-                    </Col>
-                </Row>
-                <Row className="mt-1">
-                    <Col>
-                        <VoiceText text='请认一认，这个是什么字啊' autoSpeak={false}/>
-                    </Col>
-                </Row>
+                {this.state.fullView ? null : (
+                <>
+                    <Row className="mt-1" >
+                        <Col>
+                            <RecogniseProgressBar progress={this.progress.bind(this)}/>
+                        </Col>
+                    </Row>
+                    <Row className="mt-1">
+                        <Col>
+                            <VoiceText text='请认一认，这个是什么字啊' autoSpeak={false}/>
+                        </Col>
+                    </Row>
+                </>
+                )}
                 <Row className="mt-1">
                     <Col>
                         <Container>
@@ -268,7 +277,14 @@ class TestView extends React.Component {
                                 <GiSpeaker/>
                             </Button>
                             ) : null}
-                            <Button variant="primary" onClick={this.recognise.bind(this, false)} disabled={this.state.judging}>
+                            <Button variant="info" onClick={this.toggleFullView.bind(this)}>
+                                {this.state.fullView ? (
+                                    <MdFullscreenExit/>
+                                ): (
+                                    <MdFullscreen/>
+                                )}
+                            </Button>
+                            <Button variant="danger" onClick={this.recognise.bind(this, false)} disabled={this.state.judging}>
                                 <MdClose/>
                             </Button>
                         </ButtonGroup>
