@@ -11,12 +11,12 @@ class NavList extends React.Component {
         return (
             <Navbar bg="light" expand="sm">
                 <Navbar.Brand href="#home">
-                    <img src={`${process.env.PUBLIC_URL}/logo192.png`} width="50" height="50"/>
+                    <img alt="Learn to write Chinses Logo" src={`${process.env.PUBLIC_URL}/logo192.png`} width="50" height="50"/>
                     {' '}
                     学写汉字
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
+                <Navbar.Collapse>
                     <Nav variant="pills" defaultActiveKey="/home">
                         {this.props.entries.map((e,i) => (
                             <Nav.Item key={i}>

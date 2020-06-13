@@ -78,16 +78,16 @@ export default function(state = initialState, action) {
       }
 
       let quizQueue = state.quizQueue.slice(1)
-      let seed = state.seed
+      let curSeed = state.seed
       let recogniseHistory = state.recogniseHistory
       if (!recognised) {
         if (quizQueue.length > 3) {
-          var i = Math.floor(random(seed++) * (quizQueue.length - 3)) + 3
+          var i = Math.floor(random(curSeed++) * (quizQueue.length - 3)) + 3
           quizQueue.push(quizQueue[i])
           quizQueue[i] = theChar
         } else {
-          const {array, newSeed} = shuffle(filter(toPairs(state.charsToLearn), p => p[1].recognised).map(p => p[0]), seed)
-          seed = newSeed
+          const {array, seed} = shuffle(filter(toPairs(state.charsToLearn), p => p[1].recognised).map(p => p[0]), curSeed)
+          curSeed = seed
           quizQueue = quizQueue.concat(array.slice(0, 3 - quizQueue.length))
           quizQueue.push(theChar)
         }
@@ -111,7 +111,7 @@ export default function(state = initialState, action) {
           }
         },
         quizQueue: quizQueue,
-        seed: seed,
+        seed: curSeed,
         recogniseHistory: recogniseHistory
       };
     }
