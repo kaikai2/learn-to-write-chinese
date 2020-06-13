@@ -78,12 +78,15 @@ class SelectView extends React.Component {
                     <Col>
                         <ButtonGroup className="d-flex">
                             <Button variant="primary" 
+                                size="lg" 
                                 disabled={this.props.newListIndex <= 1}
                                 onClick={e => this.props.changeNewIndex(this.props.newListIndex - 1)}>
                                 <MdChevronLeft />
                             </Button>
-                            <HanziList chars={this.props.newChars} size={50} className="mb-2"/>
-                            <Button variant="primary" onClick={e => this.props.changeNewIndex(this.props.newListIndex + 1)}>
+                            <HanziList chars={this.props.newChars} size={Math.max(50, this.props.optimalCharSize / 10)} className="mb-2"/>
+                            <Button variant="primary" 
+                                size="lg" 
+                                onClick={e => this.props.changeNewIndex(this.props.newListIndex + 1)}>
                                 <MdChevronRight />
                             </Button>
                         </ButtonGroup>
@@ -98,14 +101,14 @@ class SelectView extends React.Component {
                 </Row>
                 <Row>
                     <Col>
-                        <HanziList chars={this.props.reviewChars} size={50}/>
+                        <HanziList chars={this.props.reviewChars} size={Math.max(50, this.props.optimalCharSize / 10)}/>
                     </Col>
                 </Row>
 
                 <Row className="mt-1">
                     <Col>
                         <ButtonGroup className="d-flex">
-                            <Button variant="primary" onClick={this.props.startRecognise.bind(this)}>
+                            <Button variant="primary" size="lg" onClick={this.props.startRecognise.bind(this)}>
                                 <MdDone/>
                                  开始测试
                             </Button>
@@ -197,6 +200,7 @@ class TestView extends React.Component {
     }
 
     toggleFullView(){
+        this.props.setFullView(!this.state.fullView)
         this.setState({fullView: !this.state.fullView})
     }
     randomOf(list){
@@ -269,22 +273,22 @@ class TestView extends React.Component {
                 <Row className="mt-1">
                     <Col>
                         <ButtonGroup className="d-flex">
-                            <Button variant="primary" onClick={this.recognise.bind(this, true)} disabled={this.state.judging}>
+                            <Button variant="primary" size="lg" onClick={this.recognise.bind(this, true)} disabled={this.state.judging}>
                                 <MdDone/>
                             </Button>
                             {window.speechSynthesis && typeof window.speechSynthesis.speak === "function" ? (
-                            <Button variant="success" onClick={this.play.bind(this)}>
+                            <Button variant="success" size="lg" onClick={this.play.bind(this)}>
                                 <GiSpeaker/>
                             </Button>
                             ) : null}
-                            <Button variant="info" onClick={this.toggleFullView.bind(this)}>
+                            <Button variant="info" size="lg" onClick={this.toggleFullView.bind(this)}>
                                 {this.state.fullView ? (
                                     <MdFullscreenExit/>
                                 ): (
                                     <MdFullscreen/>
                                 )}
                             </Button>
-                            <Button variant="danger" onClick={this.recognise.bind(this, false)} disabled={this.state.judging}>
+                            <Button variant="danger" size="lg" onClick={this.recognise.bind(this, false)} disabled={this.state.judging}>
                                 <MdClose/>
                             </Button>
                         </ButtonGroup>

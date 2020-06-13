@@ -1,15 +1,19 @@
 import React from 'react';
 
-import { Navbar, Nav } from 'react-bootstrap'
+import { Navbar, Nav, Button } from 'react-bootstrap'
 
-import { MdAirplanemodeActive } from 'react-icons/md'
+import { MdAirplanemodeActive, MdRefresh, MdAddToPhotos } from 'react-icons/md'
 
 //import {ReactComponent as ReactLogo} from '../logo.svg'
+
+const isInWebAppiOS = window.navigator.standalone == true
+const isInWebAppChrome = window.matchMedia('(display-mode: standalone)').matches
+const isMobile = typeof window.orientation !== 'undefined'
 
 class NavList extends React.Component {
     render() {
         return (
-            <Navbar bg="light" expand="sm">
+            <Navbar bg="light" expand="sm" sticky="top">
                 <Navbar.Brand href="#home">
                     <img alt="Learn to write Chinses Logo" src={`${process.env.PUBLIC_URL}/logo192.png`} width="50" height="50"/>
                     {' '}
@@ -32,6 +36,16 @@ class NavList extends React.Component {
                 </Navbar.Collapse>
                 {this.props.online || (
                     <MdAirplanemodeActive/>
+                )}
+                {isMobile && (
+                    <>
+                    {isInWebAppiOS || isInWebAppChrome ? (
+                        <Button variant="outline-danger" size="sm" 
+                            onClick={window.location.reload.bind(window.location, true)}>
+                            <MdRefresh/>
+                        </Button>
+                        ) : null}
+                    </>
                 )}
             </Navbar>
         )

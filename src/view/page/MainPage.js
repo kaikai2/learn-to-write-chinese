@@ -1,8 +1,19 @@
 import React from 'react'
 import { connect }  from 'react-redux'
 
-import { Button, ButtonGroup, Container, Row, ListGroup, Col } from 'react-bootstrap'
-import { MdChevronLeft, MdChevronRight } from 'react-icons/md'
+import { 
+    Button, 
+    ButtonGroup, 
+    Container, 
+    Row, 
+    ListGroup, 
+    Col } from 'react-bootstrap'
+import { 
+    MdChevronLeft, 
+    MdChevronRight,
+    MdFullscreen,
+    MdFullscreenExit
+ } from 'react-icons/md'
 import { GiSpeaker } from 'react-icons/gi'
 import { GoPencil } from 'react-icons/go'
 
@@ -11,7 +22,10 @@ import { getNewCharList } from '../../model/selectors'
 import { speak } from '../../module/speak'
 import {descriptiveWords} from '../../module/words'
 
-import { Hanzi, HanziStrokes } from '..'
+import { 
+    Hanzi, 
+    HanziStrokes
+ } from '..'
 
 class MainPage extends React.Component {
     hanzi = null
@@ -24,6 +38,7 @@ class MainPage extends React.Component {
             chars: ['鸡','米','花','香'],
             replayed: 0,
             writing: false,
+            fullView: false
         }
     }
 
@@ -70,7 +85,10 @@ class MainPage extends React.Component {
             })
         }
     }
-
+    toggleFullView(){
+        this.props.setFullView(!this.state.fullView)
+        this.setState({fullView: !this.state.fullView})
+    }
     currentChar() {
         if (this.state.curIndex >= 0 && this.state.curIndex < this.props.newChars.length){
             return this.props.newChars[this.state.curIndex]
@@ -81,6 +99,7 @@ class MainPage extends React.Component {
     render() {
         return (
             <Container fluid>
+                {this.state.fullView ? null : (
                 <Row className="mt-1">
                     <Col xs={12} md={3}>
                         <h1>今日汉字</h1>
@@ -99,42 +118,47 @@ class MainPage extends React.Component {
                         </ListGroup>
                     </Col>
                 </Row>
+                )}
                 <Row className="mt-1">
                     <Col>
-                        <Container >
 
-                            <Hanzi
-                                ref={i => this.hanzi = i}
-                                size={this.props.optimalCharSize}
-                                char={this.currentChar()} 
-                                clickPlay={!this.state.writing}
-                                quiz={true}/>
+                        <Hanzi
+                            ref={i => this.hanzi = i}
+                            size={this.props.optimalCharSize}
+                            char={this.currentChar()} 
+                            clickPlay={!this.state.writing}
+                            quiz={true}/>
                     
                             <HanziStrokes 
-                                size={30} 
+                                size={Math.max(30, this.props.optimalCharSize / 10)} 
                                 char={this.currentChar()}
                             />
-                        </Container>
                     </Col>
                 </Row>
                 <Row className="mt-1">
                     <Col>
                         <ButtonGroup className="d-flex"> 
-                            <Button variant="primary" disabled={this.state.curIndex === 0} onClick={this.prevChar.bind(this)}>
+                            <Button variant="primary" size="lg" disabled={this.state.curIndex === 0} onClick={this.prevChar.bind(this)}>
                                 <MdChevronLeft/>
                             </Button>
 
                             {window.speechSynthesis && typeof window.speechSynthesis.speak === "function" ? (
-                            <Button variant="success" onClick={this.play.bind(this)}>
+                            <Button variant="success" size="lg" onClick={this.play.bind(this)}>
                                 <GiSpeaker/>
                             </Button>
                             ) : null}
-
-                            <Button variant="warning" disabled={this.state.writing} onClick={this.startQuiz.bind(this)}>
+                            <Button variant="info" size="lg" onClick={this.toggleFullView.bind(this)}>
+                                {this.state.fullView ? (
+                                    <MdFullscreenExit/>
+                                ): (
+                                    <MdFullscreen/>
+                                )}
+                            </Button>
+                            <Button variant="warning" size="lg" disabled={this.state.writing} onClick={this.startQuiz.bind(this)}>
                                 <GoPencil/>
                             </Button>
 
-                            <Button variant="primary" disabled={this.state.curIndex >= this.props.newChars.length - 1} onClick={this.nextChar.bind(this)}>
+                            <Button variant="primary" size="lg" disabled={this.state.curIndex >= this.props.newChars.length - 1} onClick={this.nextChar.bind(this)}>
                                 <MdChevronRight/>
                             </Button>
                         </ButtonGroup>

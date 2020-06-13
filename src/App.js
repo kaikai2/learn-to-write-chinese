@@ -12,7 +12,8 @@ class App extends React.Component {
       width: 0,
       height: 0,
       optimalCharSize: 100,
-      online: window.navigator.onLine
+      online: window.navigator.onLine,
+      fullView: false
     }
   }
   navListEntries = [{
@@ -54,16 +55,19 @@ class App extends React.Component {
   onTabChange(activeTab) {
     this.setState({activeTab})
   }
+  setFullView(fullView) {
+    this.setState({fullView})
+  }
   renderPage() {
     switch(this.state.activeTab) {
       default:
       case 0:
         return (
-          <MainPage optimalCharSize={this.state.optimalCharSize}/>
+          <MainPage optimalCharSize={this.state.optimalCharSize} setFullView={this.setFullView.bind(this)}/>
         ) 
       case 1: 
         return (
-          <RecognisePage optimalCharSize={this.state.optimalCharSize}/>
+          <RecognisePage optimalCharSize={this.state.optimalCharSize} setFullView={this.setFullView.bind(this)}/>
         )
       case 2:
         return (
@@ -78,13 +82,15 @@ class App extends React.Component {
   render() {
     return (
       <>
-        <NavList entries={this.navListEntries}
-          activeTab={this.state.activeTab}
-          onChange={this.onTabChange.bind(this)} 
-          variant="tabs" 
-          defaultActiveKey="/home"
-          online={this.state.online}
-          />
+        {!this.state.fullView && (
+          <NavList entries={this.navListEntries}
+            activeTab={this.state.activeTab}
+            onChange={this.onTabChange.bind(this)} 
+            variant="tabs" 
+            defaultActiveKey="/home"
+            online={this.state.online}
+            />
+        )}
         {this.renderPage()}
       </>
     );
