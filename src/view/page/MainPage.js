@@ -51,10 +51,12 @@ class MainPage extends React.Component {
     }
 
     play() {
-        const theChar = this.props.newChars[this.state.curIndex]
-        let toSpeak = descriptiveWords(theChar)
-        console.log(toSpeak)
-        speak(toSpeak)
+        const theChar = this.currentChar()
+        if (theChar) {
+            let toSpeak = descriptiveWords(theChar)
+            console.log(toSpeak)
+            speak(toSpeak)
+        }
     }
 
     startQuiz() {
@@ -67,6 +69,13 @@ class MainPage extends React.Component {
                 }
             })
         }
+    }
+
+    currentChar() {
+        if (this.state.curIndex >= 0 && this.state.curIndex < this.props.newChars.length){
+            return this.props.newChars[this.state.curIndex]
+        }
+        return null;
     }
 
     render() {
@@ -97,13 +106,13 @@ class MainPage extends React.Component {
                             <Hanzi
                                 ref={i => this.hanzi = i}
                                 size={this.props.optimalCharSize}
-                                char={this.props.newChars[this.state.curIndex]} 
+                                char={this.currentChar()} 
                                 clickPlay={!this.state.writing}
                                 quiz={true}/>
                     
                             <HanziStrokes 
                                 size={30} 
-                                char={this.props.newChars[this.state.curIndex]}
+                                char={this.currentChar()}
                             />
                         </Container>
                     </Col>
@@ -125,7 +134,7 @@ class MainPage extends React.Component {
                                 <GoPencil/>
                             </Button>
 
-                            <Button variant="primary" disabled={this.state.curIndex === this.props.newChars.length - 1} onClick={this.nextChar.bind(this)}>
+                            <Button variant="primary" disabled={this.state.curIndex >= this.props.newChars.length - 1} onClick={this.nextChar.bind(this)}>
                                 <MdChevronRight/>
                             </Button>
                         </ButtonGroup>
