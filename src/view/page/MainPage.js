@@ -147,14 +147,14 @@ class MainPage extends React.Component {
                                 <GiSpeaker/>
                             </Button>
                             ) : null}
-                            <Button variant="info" size="lg" onClick={this.toggleFullView.bind(this)}>
+                            <Button variant="outline-warning" size="lg" onClick={this.toggleFullView.bind(this)}>
                                 {this.state.fullView ? (
                                     <MdFullscreenExit/>
                                 ): (
                                     <MdFullscreen/>
                                 )}
                             </Button>
-                            <Button variant="warning" size="lg" disabled={this.state.writing} onClick={this.startQuiz.bind(this)}>
+                            <Button variant="danger" size="lg" disabled={this.state.writing} onClick={this.startQuiz.bind(this)}>
                                 <GoPencil/>
                             </Button>
 

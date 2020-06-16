@@ -273,15 +273,15 @@ class TestView extends React.Component {
                 <Row className="mt-1">
                     <Col>
                         <ButtonGroup className="d-flex">
-                            <Button variant="primary" size="lg" onClick={this.recognise.bind(this, true)} disabled={this.state.judging}>
+                            <Button variant="success" size="lg" onClick={this.recognise.bind(this, true)} disabled={this.state.judging}>
                                 <MdDone/>
                             </Button>
                             {window.speechSynthesis && typeof window.speechSynthesis.speak === "function" ? (
-                            <Button variant="success" size="lg" onClick={this.play.bind(this)}>
+                            <Button variant="primary" size="lg" onClick={this.play.bind(this)}>
                                 <GiSpeaker/>
                             </Button>
                             ) : null}
-                            <Button variant="info" size="lg" onClick={this.toggleFullView.bind(this)}>
+                            <Button variant="outline-warning" size="lg" onClick={this.toggleFullView.bind(this)}>
                                 {this.state.fullView ? (
                                     <MdFullscreenExit/>
                                 ): (
