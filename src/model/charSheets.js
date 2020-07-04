@@ -47,8 +47,18 @@ const chars = ("亮 星 我 明 树 叶 日 孩 红 "
     + "稀 奇 祝 贺 哟 脑 呆 床 闹"
     + "钟 拨 准 备 其 实 轻 响 迟"
     + "已 叠 包 碗 写 冒 您 了 碱"
-    + "过桥沙报台视步课体色惊对排岸江房青伞静夜举"
-    + "头低故乡弯像野晨常短扁杏苹群堆商场巾作业菜"
+    + "过桥沙报台视步课体色惊对排岸江房青伞静夜举" /*2020.7.4 review*/
+    + "见都捉迷很藏变急教只泳拿幼文"
+    + "尾玉进告关桃荷菊吹浇燕睡醒蛙"
+    + "椅桌赶救假逃伸夹棍丢熟咚抬"
+    + "知道午这什害付顶角扑分昨拇指"
+    + "加求咬力贴亲接慢每因像金扇满"
+    + "熊直该停撞颈").split(/ */);
+
+
+/* two chars per day*/
+const charsNew = (  
+      "头低故乡弯像野晨常短扁杏苹群堆商场巾作业菜"
     + "豆心越风鲜尘灭男休手众城安广升旗彩飘空答搭"
     + "间这些都吗深景次再仔细兴现生许格艳言语参让"
     + "起玩烧化砍造舍结直束万复苏歌舞泉丁百齐争鸣"
@@ -146,5 +156,9 @@ for (var i = 0; i < chars.length; i += 3) {
     line++;
     CharSheets["L" + line.toString()] = chars.slice(i, i + 3).join('')
 }
-
+line = 0;
+for (var i = 0; i < charsNew.length; i += 2) {
+    line++;
+    CharSheets["L" + line.toString()] = charsNew.slice(i, i + 2).join('')
+}
 CharSheets.length = line
