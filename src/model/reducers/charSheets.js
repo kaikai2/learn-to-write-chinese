@@ -1,5 +1,4 @@
-import { CHANGE_NEW } from "../actionTypes";
-import { CharSheets} from "../charSheets"
+import { CHANGE_NEW } from "../actionTypes"
 
 const initialState = {
   newListIndex: 56,

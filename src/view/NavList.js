@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Navbar, Nav, Button } from 'react-bootstrap'
 
-import { MdAirplanemodeActive, MdRefresh, MdAddToPhotos } from 'react-icons/md'
+import { MdAirplanemodeActive, MdRefresh } from 'react-icons/md'
 
 //import {ReactComponent as ReactLogo} from '../logo.svg'
 
-const isInWebAppiOS = window.navigator.standalone == true
+const isInWebAppiOS = window.navigator.standalone === true
 const isInWebAppChrome = window.matchMedia('(display-mode: standalone)').matches
 const isMobile = typeof window.orientation !== 'undefined'
 

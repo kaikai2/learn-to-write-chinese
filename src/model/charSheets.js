@@ -148,16 +148,17 @@ const charsNew = (
     + "患匪逾赖耕潜舶哲仓储烹盗综判钝凌仅绘吨敏捷"
     + "例筛辐汰肴尿"
     ).split(/ */);
-var line = 0;
-export var CharSheets = {
+let line = 0;
+export const CharSheets = {
     length: 0
 };
-for (var i = 0; i < chars.length; i += 3) {
+let i = 0
+for (i = 0; i < chars.length; i += 3) {
     line++;
     CharSheets["L" + line.toString()] = chars.slice(i, i + 3).join('')
 }
-line = 0;
-for (var i = 0; i < charsNew.length; i += 2) {
+
+for (i = 0; i < charsNew.length; i += 2) {
     line++;
     CharSheets["L" + line.toString()] = charsNew.slice(i, i + 2).join('')
 }
