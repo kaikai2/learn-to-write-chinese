@@ -1,6 +1,7 @@
 import React from 'react';
 import {ListGroup} from 'react-bootstrap'
-import moment from 'moment/min/moment-with-locales'
+import moment from 'moment'
+import 'moment/min/locales'
 import VoiceText from './VoiceText'
 
 class RecogniseHistoryItem extends React.Component {

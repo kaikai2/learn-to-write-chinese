@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect }  from 'react-redux'
-import moment from 'moment/min/moment-with-locales'
+import moment from 'moment'
+import 'moment/min/locales'
+
 import filesize from 'filesize'
 
 import { Button, Form, Container, Row, Col, ListGroup, InputGroup, Alert } from 'react-bootstrap'
