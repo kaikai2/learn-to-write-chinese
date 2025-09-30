@@ -11,7 +11,7 @@
     "chinese-lexicon": "^1.0.40",
     "filesize": "^6.1.0",
     "hanzi-writer": "^2.2.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "pinyin": "^2.9.0",
     "react": "^16.13.1",
